@@ -2,14 +2,19 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Template.Areas.Identity.Data;
+using Template.Models;
 
 namespace Template.Data;
 
 public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
+    public DbSet<Player> Players { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
+        
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

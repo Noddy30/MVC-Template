@@ -9,12 +9,27 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.21">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Shared\_Partial\" />
+    <None Remove="Repositories\" />
+    <None Remove="Repositories\Roles\" />
+    <None Remove="ViewModels\" />
+    <None Remove="Repositories\Players\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Shared\_Partial\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="Repositories\Roles\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Repositories\Players\" />
+  </ItemGroup>
 </Project>

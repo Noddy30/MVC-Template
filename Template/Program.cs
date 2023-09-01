@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Template.Areas.Identity.Data;
 using Template.Data;
 using Template.Repositories.Players;
+using Template.Repositories.Users;
 
 namespace Template
 {
@@ -13,9 +14,6 @@ namespace Template
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'AuthDbContextConnection' not found.");
 
-            //builder.Services.AddDbContext<AppDbContext>(options =>
-            //    options.UseSqlServer(connectionString));
-
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
@@ -23,7 +21,9 @@ namespace Template
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Add Repositories
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
@@ -89,8 +89,8 @@ namespace Template
                     
                     user.UserName = email;
                     user.Email = email;
-                    user.FirstName = "Eduan";
-                    user.LastName = "Name";
+                    //user.FirstName = "Eduan";
+                    //user.LastName = "Name";
 
                     var createUserResult = await userManager.CreateAsync(user, password);
 

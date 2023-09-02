@@ -1,0 +1,21 @@
+﻿@model Template.Areas.Identity.Data.Viewmodels.UserViewModel
+@{
+    ViewData["Title"] = "Edit User";
+}
+@{
+    Layout = "~/Views/Shared/_BackendLayout.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <form asp-action="EditUser" method="post" class="card card-default needs-validation" id="form" enctype="multipart/form-data" novalidate>
+            <div class="card-header">
+                <a asp-action="Index" class=" btn btn-warning">Cancel</a>
+                <button type="submit" id="btnSubmit" class="btn btn-dark">Save</button>
+            </div>
+            <div class="card-body">
+                @Html.Partial("Partial/_Form.cshtml", Model)
+            </div>
+        </form>
+    </div>
+</div>

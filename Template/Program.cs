@@ -86,11 +86,11 @@ namespace Template
                 {
                     var user = new ApplicationUser();
                     user.Id = "a92bee58-6f38-4076-9207-ad09502b43cb";
-                    
+
                     user.UserName = email;
                     user.Email = email;
-                    //user.FirstName = "Eduan";
-                    //user.LastName = "Name";
+                    user.FirstName = "Eduan";
+                    user.LastName = "Name";
 
                     var createUserResult = await userManager.CreateAsync(user, password);
 

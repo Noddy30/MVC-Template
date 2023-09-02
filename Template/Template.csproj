@@ -25,7 +25,6 @@
     <None Remove="Repositories\Roles\" />
     <None Remove="ViewModels\" />
     <None Remove="Repositories\Players\" />
-    <None Remove="Views\Users\" />
     <None Remove="Repositories\Users\" />
     <None Remove="Views\Shared\Constants\" />
     <None Remove="Areas\Identity\Pages\Account\dist\css\adminlte.css" />
@@ -2083,6 +2082,10 @@
     <None Remove="Areas\Identity\Pages\Account\plugins\uplot\uPlot.iife.min.js" />
     <None Remove="Areas\Identity\Pages\Account\plugins\uplot\uPlot.min.css" />
     <None Remove="Areas\Identity\Pages\Account\plugins\" />
+    <None Remove="Views\User\" />
+    <None Remove="Views\User\Partial\" />
+    <None Remove="Areas\Identity\Data\Models\" />
+    <None Remove="Areas\Identity\Data\Viewmodels\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2090,11 +2093,14 @@
     <Folder Include="Repositories\Roles\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Repositories\Players\" />
-    <Folder Include="Views\Users\" />
     <Folder Include="Repositories\Users\" />
     <Folder Include="Views\Shared\Constants\" />
     <Folder Include="Areas\Identity\Pages\Account\dist\" />
     <Folder Include="Areas\Identity\Pages\Account\plugins\" />
+    <Folder Include="Views\User\" />
+    <Folder Include="Views\User\Partial\" />
+    <Folder Include="Areas\Identity\Data\Models\" />
+    <Folder Include="Areas\Identity\Data\Viewmodels\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />

@@ -38,6 +38,7 @@ namespace Template.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
         [TempData]
         public string ErrorMessage { get; set; }
+
         public class InputModel
         {
             [Required]
@@ -49,6 +50,8 @@ namespace Template.Areas.Identity.Pages.Account
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
+
+        
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))

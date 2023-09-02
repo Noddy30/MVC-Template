@@ -1,0 +1,54 @@
+﻿@model Template.Areas.Identity.Data.Viewmodels.UserViewModel
+<input asp-for="Id" hidden />
+<div class="col-12 col-md-12">
+    <h4 class="mb-0">User Details</h4>
+    <hr class="mt-1" />
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Name"></label>
+                <input class="form-control" asp-for="Name" placeholder="Enter user name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+                <span asp-description-for="Name"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="mb-3">
+                <label class="form-label" asp-for="LastName"></label>
+                <input class="form-control" asp-for="LastName" placeholder="Enter user surname">
+                <span asp-validation-for="LastName" class="text-danger"></span>
+                <span asp-description-for="LastName"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Email"></label>
+                <input class="form-control" asp-for="Email" placeholder="Enter a valid email address">
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <span asp-description-for="Email"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="mb-3">
+                <label class="form-label" asp-for="PhoneNumber"></label>
+                <input class="form-control" asp-for="PhoneNumber" placeholder="Enter cell-number">
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                <span asp-description-for="PhoneNumber"></span>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h4 class="mb-0">User Role</h4>
+    <hr>
+    <div class="row">
+        <div class="col-12 col-md-6 p-2">
+            <div class="mb-3">
+                <label class="form-label">User Role</label>
+                <select class="fform-control custom-select"></select>
+                @*<span asp-validation-for="RoleId" class="text-danger"></span>*@
+            </div>
+        </div>
+    </div>
+</div>

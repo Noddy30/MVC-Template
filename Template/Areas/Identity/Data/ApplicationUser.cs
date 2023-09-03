@@ -9,8 +9,7 @@ namespace Template.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the AuthUser class
 public class ApplicationUser : IdentityUser
 {
-    //public string FirstName { get; set; }
-    //public string LastName { get; set; }
-
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
 }
 

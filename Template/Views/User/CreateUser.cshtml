@@ -1,0 +1,47 @@
+﻿@model Template.Areas.Identity.Data.Viewmodels.UserViewModel
+@{
+    ViewData["Title"] = "Create User";
+}
+@{
+    Layout = "~/Views/Shared/_BackendLayout.cshtml";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <form asp-action="CreateUser" method="post" class="card card-default needs-validation" id="form" enctype="multipart/form-data" novalidate>
+            <div class="card-header">
+                <a asp-action="Index" class=" btn btn-warning">Cancel</a>
+                <button type="submit" id="btnSubmit" class="btn btn-dark">Save</button>
+            </div>
+            <div class="card-body">
+                @Html.Partial("Partial/_Form.cshtml", Model)
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        initUserRoleDropdown();
+        async function initUserRoleDropdown() {
+            debugger;
+
+            const url = '@Url.Action("GetAllRoles","User")';
+            const { data } = await axios.get(url);
+
+            const dropdown = $('#Role');
+            dropdown.selectize({
+                valueField: 'name',
+                labelField: 'name',
+                searchField: 'name',
+                options: data,
+                placeholder: 'Please select',
+                items: [],
+                create: false
+            });
+        }
+
+    </script>
+}
+

@@ -16,29 +16,50 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Template.Areas.Identity.Data;
 using Template.Views.Shared.Constants;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace Template.Areas.Identity.Pages.Account
 {
 
     [AllowAnonymous]
-    public class LoginModel : PageModel
+    public class LoginRegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
-        public LoginModel(
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
+        private readonly ILogger<RegisterModel> _logger;
+        private readonly IEmailSender _emailSender;
+
+
+        public LoginRegisterModel(
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<LoginModel> logger)
+            ILogger<RegisterModel> logger,
+            IEmailSender emailSender)
         {
+            _userManager = userManager;
+            _userStore = userStore;
+            _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            _emailSender = emailSender;
         }
+
         [BindProperty]
-        public InputModel Input { get; set; }
+        public LoginModel Login { get; set; }
+        [BindProperty]
+        public RegisterModel Register { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
         public string ReturnUrl { get; set; }
         [TempData]
         public string ErrorMessage { get; set; }
-        public class InputModel
+
+
+        public class LoginModel
         {
             [Required]
             [EmailAddress]
@@ -49,7 +70,28 @@ namespace Template.Areas.Identity.Pages.Account
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
-        public async Task OnGetAsync(string returnUrl = null)
+
+
+        public class RegisterModel
+        {
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string Password { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirm password")]
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
+        }
+
+        public async Task OnGetAsyncLogin(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
@@ -66,42 +108,138 @@ namespace Template.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        public async Task OnGetAsyncRegister(string returnUrl = null)
+        {
+            ReturnUrl = returnUrl;
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        }
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Home");
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(Login.Email) && !string.IsNullOrEmpty(Login.Password))
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                // The form data indicates a login attempt
+                var result = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, Login.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect(returnUrl); // Redirect to the specified return URL or the home page
                 }
-                //if (result.RequiresTwoFactor)
-                //{
-                //    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                //}
-                if (result.IsLockedOut)
+                // Handle login failure
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            }
+            else if (!string.IsNullOrEmpty(Register.Email) && !string.IsNullOrEmpty(Register.Password) && !string.IsNullOrEmpty(Register.ConfirmPassword))
+            {
+                // The form data indicates a registration attempt
+                if (Register.Password != Register.ConfirmPassword)
                 {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
+                    ModelState.AddModelError(string.Empty, "The password and confirmation password do not match.");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
+                    var user = CreateUser();
+                    await _userStore.SetUserNameAsync(user, Register.Email, CancellationToken.None);
+                    await _emailStore.SetEmailAsync(user, Register.Email, CancellationToken.None);
+                    var result = await _userManager.CreateAsync(user, Register.Password);
+
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User created a new account with password.");
+                        // Handle successful registration
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl); // Redirect to the specified return URL or the home page
+                    }
+                    else
+                    {
+                        // Handle registration failure
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                    }
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // If no successful login or registration occurred, stay on the same page
             return Page();
         }
-        
+
+        //public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        //{
+        //    returnUrl ??= Url.Content("~/");
+        //    if (!string.IsNullOrEmpty(Login.Email) && !string.IsNullOrEmpty(Login.Password))
+        //    {
+        //        // The form data indicates a login attempt
+        //        var result = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, Login.RememberMe, lockoutOnFailure: false);
+        //        if (result.Succeeded)
+        //        {
+        //            _logger.LogInformation("User logged in.");
+        //            return LocalRedirect("~/Controllers/Home/Index");
+        //        }
+        //        // Handle login failure
+        //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        //    }
+        //    else if (!string.IsNullOrEmpty(Register.Email) && !string.IsNullOrEmpty(Register.Password) && !string.IsNullOrEmpty(Register.ConfirmPassword))
+        //    {
+        //        // The form data indicates a registration attempt
+        //        if (Register.Password != Register.ConfirmPassword)
+        //        {
+        //            ModelState.AddModelError(string.Empty, "The password and confirmation password do not match.");
+        //        }
+        //        else
+        //        {
+        //            var user = CreateUser();
+        //            await _userStore.SetUserNameAsync(user, Register.Email, CancellationToken.None);
+        //            await _emailStore.SetEmailAsync(user, Register.Email, CancellationToken.None);
+        //            var result = await _userManager.CreateAsync(user, Register.Password);
+
+        //            if (result.Succeeded)
+        //            {
+        //                _logger.LogInformation("User created a new account with password.");
+        //                // Handle successful registration
+        //                //return RedirectToPage("RegisterConfirmation", new { email = Register.Email, returnUrl = returnUrl });
+        //                await _signInManager.SignInAsync(user, isPersistent: false);
+        //                return LocalRedirect(returnUrl);
+        //            }
+        //            else
+        //            {
+        //                // Handle registration failure
+        //                foreach (var error in result.Errors)
+        //                {
+        //                    ModelState.AddModelError(string.Empty, error.Description);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    // If we got this far, something failed, redisplay the form
+        //    return Page();
+        //}
+        private ApplicationUser CreateUser()
+        {
+            try
+            {
+                return Activator.CreateInstance<ApplicationUser>();
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+            }
+        }
+
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
+        {
+            if (!_userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<ApplicationUser>)_userStore;
+        }
+
     }
 }
 

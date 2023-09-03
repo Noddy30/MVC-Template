@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Template.Areas.Identity.Data;
@@ -21,6 +22,13 @@ namespace Template
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //.AddCookie(options =>
+            //{
+            //    options.LoginPath = "/Identity/Account/LoginRegister"; // Set your custom login page path here
+            //    // ... other cookie options ...
+            //});
+
             // Add Repositories
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -40,7 +48,6 @@ namespace Template
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -86,11 +93,11 @@ namespace Template
                 {
                     var user = new ApplicationUser();
                     user.Id = "a92bee58-6f38-4076-9207-ad09502b43cb";
-                    
+
                     user.UserName = email;
                     user.Email = email;
-                    //user.FirstName = "Eduan";
-                    //user.LastName = "Name";
+                    user.FirstName = "Eduan";
+                    user.LastName = "Name";
 
                     var createUserResult = await userManager.CreateAsync(user, password);
 

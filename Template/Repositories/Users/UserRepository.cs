@@ -1,6 +1,9 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
+using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Template.Areas.Identity.Data;
+using Template.Areas.Identity.Data.Viewmodels;
 using Template.Data;
 
 namespace Template.Repositories.Users
@@ -13,15 +16,24 @@ namespace Template.Repositories.Users
         Task DeleteAsync(string id);
         Task RestoreAsync(string id);
         Task<List<ApplicationUser?>> GetAllUsersAsync();
+        Task<string> GetUserRoleByUserIdAsync(string id);
+        Task<(IdentityResult Result, string UserId)> CreateUserAsync(UserViewModel viewModel);
+        Task<(IdentityResult Result, string UserId)> UpdateUserAsync(string id, UserViewModel viewModel);
         //Task<string> GetPaginated();
     }
     public class UserRepository : IUserRepository
 	{
         private readonly AppDbContext _dbcontext;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserRepository(AppDbContext dbcontext)
+        public UserRepository(AppDbContext dbcontext,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _dbcontext = dbcontext;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task CreateAsync(ApplicationUser userModel)
@@ -60,6 +72,134 @@ namespace Template.Repositories.Users
             }
             return model;
         }
+
+        public async Task<string>GetUserRoleByUserIdAsync(string id)
+        {
+            var userRoleid = await _dbcontext.UserRoles.Where(w => w.UserId == id).Select(s => s.RoleId).FirstOrDefaultAsync();
+            var role = await _dbcontext.Roles.Where(w => w.Id == userRoleid).Select(s => s.Name).FirstOrDefaultAsync();
+
+            if (role == null)
+            {
+                return null;
+            }
+            return role;
+        }
+
+        public async Task<(IdentityResult Result, string UserId)> CreateUserAsync(UserViewModel viewModel)
+        {
+            var userModel = new ApplicationUser
+            {
+                Email = viewModel.Email,
+                PhoneNumber = viewModel.PhoneNumber,
+                FirstName = viewModel.Name,
+                LastName = viewModel.LastName,
+                UserName = viewModel.Email
+            };
+
+            var result = await _userManager.CreateAsync(userModel);
+            if (!result.Succeeded)
+            {
+                return (result, userModel.Id);
+            }
+            // Only assign a role to the user if they get successfully registered
+            var role = await _roleManager.FindByNameAsync(viewModel.Role);
+            var roleResult = await _userManager.AddToRoleAsync(userModel, role.Name);
+            // Check if roles were successfully added to user
+            if (!roleResult.Succeeded)
+            {
+                return (roleResult, userModel.Id);
+            }
+
+            // Success
+            return (result, userModel.Id);
+        }
+
+        public async Task<(IdentityResult Result, string UserId)> UpdateUserAsync(string id, UserViewModel viewModel)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                // Handle the case where the user with the provided ID doesn't exist.
+                return (IdentityResult.Failed(), id);
+            }
+
+            // Compare and update fields that have changed
+            if (user.Email != viewModel.Email)
+            {
+                user.Email = viewModel.Email;
+            }
+
+            if (user.PhoneNumber != viewModel.PhoneNumber)
+            {
+                user.PhoneNumber = viewModel.PhoneNumber;
+            }
+
+            if (user.FirstName != viewModel.Name)
+            {
+                user.FirstName = viewModel.Name;
+            }
+
+            if (user.LastName != viewModel.LastName)
+            {
+                user.LastName = viewModel.LastName;
+            }
+
+            if (!string.IsNullOrEmpty(viewModel.Password))
+            {
+                var passwordHasher = new PasswordHasher<ApplicationUser>();
+                user.PasswordHash = passwordHasher.HashPassword(user, viewModel.Password);
+            }
+
+            // Check if the role has changed
+            var userRoles = await _userManager.GetRolesAsync(user) as List<string>;
+            if (!userRoles.Contains(viewModel.Role))
+            {
+                // Removing previous roles
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
+                if (!removeResult.Succeeded)
+                {
+                    return (removeResult, user.Id);
+                }
+
+                // Adding new role
+                var role = await _roleManager.FindByNameAsync(viewModel.Role);
+                var addResult = await _userManager.AddToRoleAsync(user, role.Name);
+                if (!addResult.Succeeded)
+                {
+                    return (addResult, user.Id);
+                }
+            }
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            return (updateResult, user.Id);
+        }
+
+
+        //public async Task<(IdentityResult Result, string UserId)> UpdateUserAsync(string id, UserViewModel viewModel)
+        //{
+        //    var user = await _userManager.FindByIdAsync(id);
+
+
+
+        //    // Removing previous roles
+        //    var userRoles = await _userManager.GetRolesAsync(user) as List<string>;
+        //    var removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
+        //    if (!removeResult.Succeeded)
+        //    {
+        //        return (removeResult, user.Id);
+        //    }
+        //    // Adding new roles
+        //    var role = await _roleManager.FindByNameAsync(viewModel.Role);
+        //    var addResult = await _userManager.AddToRoleAsync(user, role.Name);
+        //    if (!addResult.Succeeded)
+        //    {
+        //        return (addResult, user.Id);
+        //    }
+
+        //    var updateResult = await _userManager.UpdateAsync(user);
+        //    return (updateResult, user.Id);
+        //}
 
         //public async Task<string> GetPaginated()
         //{

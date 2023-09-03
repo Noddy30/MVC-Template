@@ -45,10 +45,25 @@
     <div class="row">
         <div class="col-12 col-md-6 p-2">
             <div class="mb-3">
-                <label class="form-label">User Role</label>
-                <select class="fform-control custom-select"></select>
-                @*<span asp-validation-for="RoleId" class="text-danger"></span>*@
+                <label class="form-label" asp-for="Role">User Role</label>
+                <select class="form-control custom-select" asp-for="Role"></select>
+                <span asp-validation-for="Role" class="text-danger"></span>
             </div>
         </div>
     </div>
+    <hr>
+    @if (Model.Password == null)
+    {
+        <h4 class="mb-0">User Password</h4>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-md-6 p-2">
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Password">User Password</label>
+                    <input class="form-control" asp-for="Password"></input>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    }
 </div>

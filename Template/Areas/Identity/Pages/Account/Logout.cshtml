@@ -12,7 +12,7 @@
         {
             <div class="forms">
                 <div class="form-wrapper">
-                    <form class="form form-login" style="margin-left: -204px;" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                    <form class="form form-login" style="margin-left: -250px;" asp-area="Identity" asp-page="/Account/Logout" method="post">
                         <button type="submit" class="btn-login">Click here to logout</button>
                     </form>
                 </div>
@@ -293,15 +293,14 @@
             }
 
         .form [type='submit'] {
-            opacity: 0;
-            display: block;
+            
             min-width: 120px;
-            margin: 30px auto 10px;
             font-size: 18px;
             line-height: 40px;
             border-radius: 25px;
             border: none;
             transition: all .3s ease-out;
+            margin-left: 93px;
         }
 
         .form-wrapper.is-active .form [type='submit'] {

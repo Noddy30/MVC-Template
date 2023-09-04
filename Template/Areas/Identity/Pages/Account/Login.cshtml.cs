@@ -165,58 +165,6 @@ namespace Template.Areas.Identity.Pages.Account
             // If no successful login or registration occurred, stay on the same page
             return Page();
         }
-
-        //public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-        //{
-        //    returnUrl ??= Url.Content("~/");
-        //    if (!string.IsNullOrEmpty(Login.Email) && !string.IsNullOrEmpty(Login.Password))
-        //    {
-        //        // The form data indicates a login attempt
-        //        var result = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, Login.RememberMe, lockoutOnFailure: false);
-        //        if (result.Succeeded)
-        //        {
-        //            _logger.LogInformation("User logged in.");
-        //            return LocalRedirect("~/Controllers/Home/Index");
-        //        }
-        //        // Handle login failure
-        //        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //    }
-        //    else if (!string.IsNullOrEmpty(Register.Email) && !string.IsNullOrEmpty(Register.Password) && !string.IsNullOrEmpty(Register.ConfirmPassword))
-        //    {
-        //        // The form data indicates a registration attempt
-        //        if (Register.Password != Register.ConfirmPassword)
-        //        {
-        //            ModelState.AddModelError(string.Empty, "The password and confirmation password do not match.");
-        //        }
-        //        else
-        //        {
-        //            var user = CreateUser();
-        //            await _userStore.SetUserNameAsync(user, Register.Email, CancellationToken.None);
-        //            await _emailStore.SetEmailAsync(user, Register.Email, CancellationToken.None);
-        //            var result = await _userManager.CreateAsync(user, Register.Password);
-
-        //            if (result.Succeeded)
-        //            {
-        //                _logger.LogInformation("User created a new account with password.");
-        //                // Handle successful registration
-        //                //return RedirectToPage("RegisterConfirmation", new { email = Register.Email, returnUrl = returnUrl });
-        //                await _signInManager.SignInAsync(user, isPersistent: false);
-        //                return LocalRedirect(returnUrl);
-        //            }
-        //            else
-        //            {
-        //                // Handle registration failure
-        //                foreach (var error in result.Errors)
-        //                {
-        //                    ModelState.AddModelError(string.Empty, error.Description);
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    // If we got this far, something failed, redisplay the form
-        //    return Page();
-        //}
         private ApplicationUser CreateUser()
         {
             try

@@ -2086,6 +2086,8 @@
     <None Remove="Views\User\Partial\" />
     <None Remove="Areas\Identity\Data\Models\" />
     <None Remove="Areas\Identity\Data\Viewmodels\" />
+    <None Remove="Areas\Identity\Pages\Account\images\ufo.png" />
+    <None Remove="Areas\Identity\Pages\Account\images\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2101,9 +2103,14 @@
     <Folder Include="Views\User\Partial\" />
     <Folder Include="Areas\Identity\Data\Models\" />
     <Folder Include="Areas\Identity\Data\Viewmodels\" />
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="Areas\Identity\Pages\Account\images\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Identity\Pages\Account\dist\css\adminlte.css">
@@ -10318,5 +10325,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="Areas\Identity\Pages\Account\images\ufo.png" />
   </ItemGroup>
 </Project>

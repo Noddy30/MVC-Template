@@ -52,9 +52,8 @@
                     $.each(data, function (key, value) {
                         debugger;
                         var Id = "<input type='hidden' value=" + value.id + " />";
-                        var editbtn = `<a href="/User/EditUser/${value.id}" class="fa fa-eye" style="color: darkslategray; margin-left: 66px;
-    margin-right: 23px;"></a>`;
-                        var removebtn = `<a href="/User/EditUser/${value.id}" class="fa fa-trash danger" style="color: indianred;"></a>`;
+                        var editbtn = `<a href="/User/EditUser/${value.id}" class="fa fa-eye" style="color: darkslategray; margin-left: 66px;margin-right: 23px;"></a>`;
+                        var removebtn = `<a href="/User/DeleteUser/${value.id}" class="fa fa-trash danger" style="color: indianred;"></a>`;
                         var action = editbtn + removebtn + Id;
 
                         empdata.push([value.firstName, value.lastName, value.userName, value.phoneNumber, action]);

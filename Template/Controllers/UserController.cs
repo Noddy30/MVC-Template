@@ -92,10 +92,21 @@ namespace Template.Controllers
             await _userRepository.CreateUserAsync(viewModel);
             return RedirectToAction("Index");
         }
+
         [HttpGet]
         public IActionResult GetAllRoles()
         {
             return Ok(_roleManager.Roles.OrderBy(x => x.Name));
+        }
+        
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                await _userRepository.DeleteAsync(id);
+            }
+            
+            return RedirectToAction("Index");
         }
     }
 }

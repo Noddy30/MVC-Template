@@ -49,7 +49,11 @@ namespace Template.Repositories.Users
             {
                 return;
             }
-            _dbcontext.ApplicationUsers.Remove(model);
+            //_dbcontext.ApplicationUsers.Remove(model);
+            //await _dbcontext.SaveChangesAsync();
+
+            model.IsDeleted = true;
+            await _userManager.UpdateAsync(model);
             await _dbcontext.SaveChangesAsync();
         }
 
@@ -65,7 +69,7 @@ namespace Template.Repositories.Users
 
         public async Task<List<ApplicationUser?>>GetAllUsersAsync()
         {
-            var model = await _dbcontext.ApplicationUsers.ToListAsync();
+            var model = await _dbcontext.ApplicationUsers.Where(w => w.IsDeleted == false).ToListAsync();
             if (model == null)
             {
                 return null;
@@ -175,31 +179,24 @@ namespace Template.Repositories.Users
             return (updateResult, user.Id);
         }
 
+        public async Task RestoreAsync(string id)
+        {
+            var model = await _dbcontext.ApplicationUsers
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-        //public async Task<(IdentityResult Result, string UserId)> UpdateUserAsync(string id, UserViewModel viewModel)
-        //{
-        //    var user = await _userManager.FindByIdAsync(id);
+            model.IsDeleted = false;
 
+            _dbcontext.Update(model);
+            await _dbcontext.SaveChangesAsync();
+        }
 
-
-        //    // Removing previous roles
-        //    var userRoles = await _userManager.GetRolesAsync(user) as List<string>;
-        //    var removeResult = await _userManager.RemoveFromRolesAsync(user, userRoles);
-        //    if (!removeResult.Succeeded)
-        //    {
-        //        return (removeResult, user.Id);
-        //    }
-        //    // Adding new roles
-        //    var role = await _roleManager.FindByNameAsync(viewModel.Role);
-        //    var addResult = await _userManager.AddToRoleAsync(user, role.Name);
-        //    if (!addResult.Succeeded)
-        //    {
-        //        return (addResult, user.Id);
-        //    }
-
-        //    var updateResult = await _userManager.UpdateAsync(user);
-        //    return (updateResult, user.Id);
-        //}
+        public async Task UpdateAsync(string id, ApplicationUser loginModel)
+        {
+            var login = await _dbcontext.ApplicationUsers.Where(x => x.Id == id).FirstOrDefaultAsync();
+            _dbcontext.ApplicationUsers.Update(login);
+            await _dbcontext.SaveChangesAsync();
+        }
 
         //public async Task<string> GetPaginated()
         //{
@@ -273,25 +270,6 @@ namespace Template.Repositories.Users
         //    var serialized = JsonConvert.SerializeObject(response);
         //    return serialized;
         //}
-
-        public async Task RestoreAsync(string id)
-        {
-            //var model = await _dbcontext.ApplicationUsers
-            //    .IgnoreQueryFilters()
-            //    .FirstOrDefaultAsync(x => x.Id == id);
-
-            //model.Deleted = false;
-
-            //_dbcontext.Update(model);
-            //await _dbcontext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(string id, ApplicationUser loginModel)
-        {
-            var login = await _dbcontext.ApplicationUsers.Where(x => x.Id == id).FirstOrDefaultAsync();
-            _dbcontext.ApplicationUsers.Update(login);
-            await _dbcontext.SaveChangesAsync();
-        }
     }
 }
 

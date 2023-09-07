@@ -2088,6 +2088,7 @@
     <None Remove="Areas\Identity\Data\Viewmodels\" />
     <None Remove="Areas\Identity\Pages\Account\images\ufo.png" />
     <None Remove="Areas\Identity\Pages\Account\images\" />
+    <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2105,6 +2106,7 @@
     <Folder Include="Areas\Identity\Data\Viewmodels\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="Areas\Identity\Pages\Account\images\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />

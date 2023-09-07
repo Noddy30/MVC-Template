@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Diagnostics;
 using Template.Models;
+using Template.Services;
 
 namespace Template.Controllers
 {
@@ -11,14 +12,22 @@ namespace Template.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IEmailService _emailService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IEmailService emailService)
         {
             _logger = logger;
+            _emailService = emailService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            //var receiver = "mbotha181@gmail.com";
+            //var subject = "Test";
+            //var message = "Hello World, This is a test for the official AuGUSsta website email service, Okay bye. ";
+
+            //await _emailService.SendEmailAsync(receiver, subject, message);
+
             return View();
         }
 

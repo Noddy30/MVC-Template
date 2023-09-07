@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using Template.Areas.Identity.Data;
 using Template.Data;
 using Template.Repositories.Players;
 using Template.Repositories.Users;
+using Template.Services;
 
 namespace Template
 {
@@ -22,11 +24,11 @@ namespace Template
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            
 
             // Add Repositories
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<IEmailService, EmailService>();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {

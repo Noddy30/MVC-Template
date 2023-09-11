@@ -95,6 +95,8 @@ namespace Template
                     user.Email = email;
                     user.FirstName = "Eduan";
                     user.LastName = "Name";
+                    user.PhoneNumber = "0837832973";
+                    user.IsDeleted = false;
 
                     var createUserResult = await userManager.CreateAsync(user, password);
 
@@ -104,9 +106,33 @@ namespace Template
                         await userManager.AddToRoleAsync(user, "SuperAdmin");
                     }
                 }
+
+                // Define the second user
+                string email2 = "mbotha181@gmail.com";
+                string password2 = "P@ssword123";
+
+                if (await userManager.FindByEmailAsync(email2) == null)
+                {
+                    var user2 = new ApplicationUser
+                    {
+                        UserName = email2,
+                        Email = email2,
+                        FirstName = "Spoegie",
+                        LastName = "MPDB",
+                        PhoneNumber = "0832756808",
+                        IsDeleted = false
+                    };
+
+                    var createUserResult2 = await userManager.CreateAsync(user2, password2);
+
+                    if (createUserResult2.Succeeded)
+                    {
+                        // Assign a role to the second user if needed
+                        await userManager.AddToRoleAsync(user2, "SuperAdmin");
+                    }
+                }
             }
-
-
+            
             app.Run();
         }
     }

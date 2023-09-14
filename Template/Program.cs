@@ -115,6 +115,7 @@ namespace Template
                 {
                     var user2 = new ApplicationUser
                     {
+                        Id = "ea01191c-e6f4-4d8f-8dee-6e6c12e66afc",
                         UserName = email2,
                         Email = email2,
                         FirstName = "Spoegie",

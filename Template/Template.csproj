@@ -2089,6 +2089,10 @@
     <None Remove="Areas\Identity\Pages\Account\images\ufo.png" />
     <None Remove="Areas\Identity\Pages\Account\images\" />
     <None Remove="Services\" />
+    <None Remove="Areas\Identity\Data\Models\Courses\" />
+    <None Remove="Areas\Identity\Data\Viewmodels\Courses\" />
+    <None Remove="Repositories\Courses\" />
+    <None Remove="Views\Course\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2107,6 +2111,10 @@
     <Folder Include="wwwroot\images\" />
     <Folder Include="Areas\Identity\Pages\Account\images\" />
     <Folder Include="Services\" />
+    <Folder Include="Areas\Identity\Data\Models\Courses\" />
+    <Folder Include="Areas\Identity\Data\Viewmodels\Courses\" />
+    <Folder Include="Repositories\Courses\" />
+    <Folder Include="Views\Course\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />

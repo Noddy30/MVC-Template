@@ -9,9 +9,9 @@ namespace Template.Repositories.Courses
 {
 	public interface ICourseRepository
 	{
-        Task CreateAsync(Course model);
-        Task UpdateAsync(string id, Course model);
-        Task<Course?> GetModelAsync(string id);
+        Task CreateAsync(GolfCourse model);
+        Task UpdateAsync(string id, GolfCourse model);
+        Task<GolfCourse?> GetModelAsync(string id);
         Task DeleteAsync(string id);
         Task RestoreAsync(string id);
     }
@@ -25,15 +25,15 @@ namespace Template.Repositories.Courses
 
         }
 
-        public async Task CreateAsync(Course model)
+        public async Task CreateAsync(GolfCourse model)
         {
-            _dbcontext.Courses.Add(model);
+            _dbcontext.GolfCourses.Add(model);
             await _dbcontext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(string id)
         {
-            var model = await _dbcontext.Courses.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var model = await _dbcontext.GolfCourses.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (model == null)
             {
                 return;
@@ -41,13 +41,13 @@ namespace Template.Repositories.Courses
             //_dbcontext.ApplicationUsers.Remove(model);
             //await _dbcontext.SaveChangesAsync();
 
-            model.isDeleted = true;
+            model.IsDeleted = true;
             await _dbcontext.SaveChangesAsync();
         }
 
-        public async Task<Course?> GetModelAsync(string id)
+        public async Task<GolfCourse?> GetModelAsync(string id)
         {
-            var model = await _dbcontext.Courses.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var model = await _dbcontext.GolfCourses.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (model == null)
             {
                 return null;
@@ -57,21 +57,21 @@ namespace Template.Repositories.Courses
 
         public async Task RestoreAsync(string id)
         {
-            var model = await _dbcontext.Courses
+            var model = await _dbcontext.GolfCourses
                 .IgnoreQueryFilters()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            model.isDeleted = false;
+            model.IsDeleted = false;
 
             _dbcontext.Update(model);
             await _dbcontext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(string id, Course model)
+        public async Task UpdateAsync(string id, GolfCourse model)
         {
-            var course = await _dbcontext.Courses.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var course = await _dbcontext.GolfCourses.Where(x => x.Id == id).FirstOrDefaultAsync();
 
-            _dbcontext.Courses.Update(model);
+            _dbcontext.GolfCourses.Update(model);
             await _dbcontext.SaveChangesAsync();
         }
     }

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Template.Areas.Identity.Data;
-using Template.Areas.Identity.Data.Viewmodels;
 using Template.Data;
+using Template.Areas.Identity.Data.Viewmodels.Users;
+
 
 namespace Template.Repositories.Users
 {

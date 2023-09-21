@@ -22,7 +22,6 @@ namespace Template.Repositories.Courses
         public CourseRepository(AppDbContext dbcontext)
 		{
             _dbcontext = dbcontext;
-
         }
 
         public async Task CreateAsync(GolfCourse model)

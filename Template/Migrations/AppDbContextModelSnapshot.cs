@@ -338,7 +338,7 @@ namespace Template.Migrations
 
                     b.HasIndex("GolfCourseId");
 
-                    b.ToTable("ScoreCard");
+                    b.ToTable("ScoreCards");
                 });
 
             modelBuilder.Entity("Template.Areas.Identity.Data.Models.TeeBoxes.TeeBox", b =>
@@ -375,26 +375,7 @@ namespace Template.Migrations
 
                     b.HasIndex("GolfCourseId");
 
-                    b.ToTable("TeeBox");
-                });
-
-            modelBuilder.Entity("Template.Models.Player", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Players");
+                    b.ToTable("TeeBoxes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

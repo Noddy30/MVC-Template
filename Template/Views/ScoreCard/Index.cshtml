@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Score Card";
+}
+@{
+    Layout = "~/Views/Shared/_BackendLayout.cshtml";
+}
+<div class="page-header">
+    
+    <div class="row align-items-center">
+        <div class="col-auto ml-auto d-print-none">
+            <a asp-action="CreateScoreCard" method="get" class="btn btn-primary mr-4 mb-2">
+                Add Score Card
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="card card-default">
+    <div class="card-body">
+        <table id="myTable" class="table table-striped table-bordered">
+            <thead class="center">
+                <tr>
+                    <th>Tee</th>
+                    <th>Slope</th>
+                    <th>Handicap</th>
+                    <th>GolfCourse</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            loadTable();
+        });
+
+        function loadTable() {
+            var empdata = [];
+            // Fetch data from the server and populate empdata
+            $.ajax({
+                url: '@Url.Action("Paginate", "ScoreCard")',
+                type: 'POST',
+                async: false,
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        var Id = "<input type='hidden' value=" + value.id + " />";
+                        var editbtn = `<a href="/ScoreCard/EditScoreCard/${value.id}" class="fa fa-eye" style="color: darkslategray; margin-left: 66px;margin-right: 23px;"></a>`;
+                        var removebtn = `<a href="/User/DeleteScorecard/${value.id}" class="fa fa-trash danger" style="color: indianred;"></a>`;
+                        var action = editbtn + removebtn + Id;
+
+                        empdata.push([value.tee, value.slope, value.handicap, value.golfCourse, action]);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+
+            // Initialize the DataTable
+            $('#myTable').DataTable({
+                data: empdata
+            });
+        }
+    </script>
+}

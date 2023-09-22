@@ -81,24 +81,7 @@ namespace Template.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Players",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastName = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Players", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ScoreCard",
+                name: "ScoreCards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -117,9 +100,9 @@ namespace Template.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ScoreCard", x => x.Id);
+                    table.PrimaryKey("PK_ScoreCards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ScoreCard_GolfCourses_GolfCourseId",
+                        name: "FK_ScoreCards_GolfCourses_GolfCourseId",
                         column: x => x.GolfCourseId,
                         principalTable: "GolfCourses",
                         principalColumn: "Id",
@@ -128,7 +111,7 @@ namespace Template.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "TeeBox",
+                name: "TeeBoxes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -146,9 +129,9 @@ namespace Template.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeeBox", x => x.Id);
+                    table.PrimaryKey("PK_TeeBoxes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TeeBox_GolfCourses_GolfCourseId",
+                        name: "FK_TeeBoxes_GolfCourses_GolfCourseId",
                         column: x => x.GolfCourseId,
                         principalTable: "GolfCourses",
                         principalColumn: "Id",
@@ -157,26 +140,23 @@ namespace Template.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScoreCard_GolfCourseId",
-                table: "ScoreCard",
+                name: "IX_ScoreCards_GolfCourseId",
+                table: "ScoreCards",
                 column: "GolfCourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeeBox_GolfCourseId",
-                table: "TeeBox",
+                name: "IX_TeeBoxes_GolfCourseId",
+                table: "TeeBoxes",
                 column: "GolfCourseId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Players");
+                name: "ScoreCards");
 
             migrationBuilder.DropTable(
-                name: "ScoreCard");
-
-            migrationBuilder.DropTable(
-                name: "TeeBox");
+                name: "TeeBoxes");
 
             migrationBuilder.DropTable(
                 name: "GolfCourses");

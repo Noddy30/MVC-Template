@@ -139,9 +139,11 @@ namespace Template.Areas.Identity.Pages.Account
                 }
                 else
                 {
+                    
                     var user = CreateUser();
                     await _userStore.SetUserNameAsync(user, Register.Email, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, Register.Email, CancellationToken.None);
+                    user.IsDeleted = false;
                     var result = await _userManager.CreateAsync(user, Register.Password);
 
                     if (result.Succeeded)

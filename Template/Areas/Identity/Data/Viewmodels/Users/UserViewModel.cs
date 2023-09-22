@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Template.Areas.Identity.Data.Viewmodels
+namespace Template.Areas.Identity.Data.Viewmodels.Users
 {
 	public class UserViewModel
 	{
@@ -10,8 +10,6 @@ namespace Template.Areas.Identity.Data.Viewmodels
         public string LastName { get; set; }
         public string Role { get; set; }
         public string? Password { get; set; }
-
-
     }
 }
 

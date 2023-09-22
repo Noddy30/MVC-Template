@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Template.Areas.Identity.Data;
-using Template.Areas.Identity.Data.Viewmodels;
+using Template.Areas.Identity.Data.Viewmodels.Users;
 using Template.Repositories.Users;
 
 namespace Template.Controllers

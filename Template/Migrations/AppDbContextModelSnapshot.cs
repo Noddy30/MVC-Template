@@ -224,24 +224,158 @@ namespace Template.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Template.Areas.Identity.Data.Models.Courses.Course", b =>
+            modelBuilder.Entity("Template.Areas.Identity.Data.Models.Courses.GolfCourse", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Coordinates")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FairwayGrass")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("GreenGrass")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Holes")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("LengthFormat")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Website")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Zip")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("GolfCourses");
+                });
+
+            modelBuilder.Entity("Template.Areas.Identity.Data.Models.ScoreCards.ScoreCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("GolfCourseId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Handicap")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Hole")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Par")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Tees")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GolfCourseId");
+
+                    b.ToTable("ScoreCard");
+                });
+
+            modelBuilder.Entity("Template.Areas.Identity.Data.Models.TeeBoxes.TeeBox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("GolfCourseId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<double>("Handicap")
+                        .HasColumnType("double");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<double>("Slope")
+                        .HasColumnType("double");
+
+                    b.Property<string>("Tee")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GolfCourseId");
+
+                    b.ToTable("TeeBox");
                 });
 
             modelBuilder.Entity("Template.Models.Player", b =>
@@ -312,6 +446,35 @@ namespace Template.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Template.Areas.Identity.Data.Models.ScoreCards.ScoreCard", b =>
+                {
+                    b.HasOne("Template.Areas.Identity.Data.Models.Courses.GolfCourse", "GolfCourse")
+                        .WithMany("Scorecards")
+                        .HasForeignKey("GolfCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GolfCourse");
+                });
+
+            modelBuilder.Entity("Template.Areas.Identity.Data.Models.TeeBoxes.TeeBox", b =>
+                {
+                    b.HasOne("Template.Areas.Identity.Data.Models.Courses.GolfCourse", "GolfCourse")
+                        .WithMany("TeeBoxes")
+                        .HasForeignKey("GolfCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GolfCourse");
+                });
+
+            modelBuilder.Entity("Template.Areas.Identity.Data.Models.Courses.GolfCourse", b =>
+                {
+                    b.Navigation("Scorecards");
+
+                    b.Navigation("TeeBoxes");
                 });
 #pragma warning restore 612, 618
         }

@@ -2102,6 +2102,8 @@
     <None Remove="Repositories\ScoreCards\" />
     <None Remove="Views\ScoreCard\" />
     <None Remove="Views\ScoreCard\Partial\" />
+    <None Remove="Views\TeeBox\" />
+    <None Remove="Views\TeeBox\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2133,6 +2135,8 @@
     <Folder Include="Repositories\ScoreCards\" />
     <Folder Include="Views\ScoreCard\" />
     <Folder Include="Views\ScoreCard\Partial\" />
+    <Folder Include="Views\TeeBox\" />
+    <Folder Include="Views\TeeBox\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />

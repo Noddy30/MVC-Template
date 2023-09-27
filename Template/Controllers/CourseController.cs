@@ -17,6 +17,12 @@ namespace Template.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Paginate()
+        {
+            var data = await _courseRepository.GetAllCoursesAsync();
+            return Json(data);
+        }
     }
 }
 

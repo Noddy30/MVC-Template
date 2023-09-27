@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Template.Areas.Identity.Data.Models.Courses;
+using Template.Areas.Identity.Data.Models.ScoreCards;
 using Template.Areas.Identity.Data.Models.TeeBoxes;
 using Template.Data;
 
@@ -13,6 +14,7 @@ namespace Template.Repositories.TeeBoxes
         Task<TeeBox?> GetModelAsync(string id);
         Task DeleteAsync(string id);
         Task RestoreAsync(string id);
+        Task<List<TeeBox?>> GetAllTeeBoxesAsync();
     }
 	public class TeeBoxRepository : ITeeBoxRepository
     {
@@ -79,6 +81,18 @@ namespace Template.Repositories.TeeBoxes
 
             _dbcontext.TeeBoxes.Update(model);
             await _dbcontext.SaveChangesAsync();
+        }
+
+        public async Task<List<TeeBox?>> GetAllTeeBoxesAsync()
+        {
+            var model = await _dbcontext.TeeBoxes
+                .Where(w => w.IsDeleted == false)
+                .ToListAsync();
+            if (model == null)
+            {
+                return null;
+            }
+            return model;
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Template.Areas.Identity.Data;
 using Template.Areas.Identity.Data.Models.Courses;
+using Template.Areas.Identity.Data.Models.ScoreCards;
 using Template.Data;
 
 namespace Template.Repositories.Courses
@@ -14,6 +15,7 @@ namespace Template.Repositories.Courses
         Task<GolfCourse?> GetModelAsync(string id);
         Task DeleteAsync(string id);
         Task RestoreAsync(string id);
+        Task<List<GolfCourse?>> GetAllCoursesAsync();
     }
     public class CourseRepository : ICourseRepository
     {
@@ -72,6 +74,18 @@ namespace Template.Repositories.Courses
 
             _dbcontext.GolfCourses.Update(model);
             await _dbcontext.SaveChangesAsync();
+        }
+
+        public async Task<List<GolfCourse?>> GetAllCoursesAsync()
+        {
+            var model = await _dbcontext.GolfCourses
+                .Where(w => w.IsDeleted == false)
+                .ToListAsync();
+            if (model == null)
+            {
+                return null;
+            }
+            return model;
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Template.Controllers
                 Role = (applicationRole != null) ? applicationRole.Name : "",
                 Password = user.PasswordHash
                 
-        };
+            };
 
             return View(userViewModel);
         }

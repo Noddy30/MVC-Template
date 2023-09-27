@@ -2099,6 +2099,11 @@
     <None Remove="Areas\Identity\Data\Models\ScoreCards\" />
     <None Remove="Areas\Identity\Data\Viewmodels\Users\" />
     <None Remove="Repositories\TeeBoxes\" />
+    <None Remove="Repositories\ScoreCards\" />
+    <None Remove="Views\ScoreCard\" />
+    <None Remove="Views\ScoreCard\Partial\" />
+    <None Remove="Views\TeeBox\" />
+    <None Remove="Views\TeeBox\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2127,6 +2132,11 @@
     <Folder Include="Areas\Identity\Data\Models\ScoreCards\" />
     <Folder Include="Areas\Identity\Data\Viewmodels\Users\" />
     <Folder Include="Repositories\TeeBoxes\" />
+    <Folder Include="Repositories\ScoreCards\" />
+    <Folder Include="Views\ScoreCard\" />
+    <Folder Include="Views\ScoreCard\Partial\" />
+    <Folder Include="Views\TeeBox\" />
+    <Folder Include="Views\TeeBox\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />

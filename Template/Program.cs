@@ -7,6 +7,8 @@ using Template.Areas.Identity.Data;
 using Template.Data;
 using Template.Repositories.Courses;
 using Template.Repositories.Players;
+using Template.Repositories.ScoreCards;
+using Template.Repositories.TeeBoxes;
 using Template.Repositories.Users;
 using Template.Services;
 
@@ -32,6 +34,8 @@ namespace Template
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.AddTransient<ICourseRepository, CourseRepository>();
+            builder.Services.AddTransient<IScoreCardRepository, ScoreCardRepository>();
+            builder.Services.AddTransient<ITeeBoxRepository, TeeBoxRepository>();
 
 
             builder.Services.AddDbContext<AppDbContext>(options =>

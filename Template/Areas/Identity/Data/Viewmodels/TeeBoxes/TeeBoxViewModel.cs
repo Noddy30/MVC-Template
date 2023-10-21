@@ -8,20 +8,8 @@ namespace Template.Areas.Identity.Data.Viewmodels.TeeBoxes
 {
 	public class TeeBoxViewModel
 	{
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        public string Tee { get; set; }
-
-        [Required]
-        public double Slope { get; set; }
-
-        [Required]
-        public double Handicap { get; set; }
-
-        [ForeignKey("GolfCourseId")]
-        public GolfCourseViewModel GolfCourse { get; set; }
+        public string Color { get; set; } = "Default Color";
+        public int Yards { get; set; }
     }
 }
 

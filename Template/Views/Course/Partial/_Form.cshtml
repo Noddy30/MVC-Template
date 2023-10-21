@@ -1,0 +1,104 @@
+﻿@model Template.Areas.Identity.Data.Viewmodels.Courses.GolfCourseViewModel
+<input asp-for="Id" hidden />
+
+<div class="col-12 col-md-12">
+    <h4 class="mb-0">User Details</h4>
+    <hr class="mt-1" />
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Name">Name</label>
+                <input class="form-control" asp-for="Name" placeholder="Enter Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+                <span asp-description-for="Name"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Phone">Phone Number</label>
+                <input class="form-control" asp-for="Phone" placeholder="Enter user Phone Number">
+                <span asp-validation-for="Phone" class="text-danger"></span>
+                <span asp-description-for="Phone"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Website">Website</label>
+                <input class="form-control" asp-for="Website" placeholder="Enter a Website">
+                <span asp-validation-for="Website" class="text-danger"></span>
+                <span asp-description-for="Website"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Address">Address</label>
+                <input class="form-control" asp-for="Address" placeholder="Enter Address">
+                <span asp-validation-for="Address" class="text-danger"></span>
+                <span asp-description-for="Address"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="mb-3">
+                <label class="form-label" asp-for="City">City</label>
+                <input class="form-control" asp-for="City" placeholder="Enter a City">
+                <span asp-validation-for="City" class="text-danger"></span>
+                <span asp-description-for="City"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="mb-3">
+                <label class="form-label" asp-for="State">State</label>
+                <input class="form-control" asp-for="State" placeholder="Enter State">
+                <span asp-validation-for="State" class="text-danger"></span>
+                <span asp-description-for="State"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Zip">Zip</label>
+                <input class="form-control" asp-for="Zip" placeholder="Enter Zip">
+                <span asp-validation-for="Zip" class="text-danger"></span>
+                <span asp-description-for="Zip"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Country">Country</label>
+                <input class="form-control" asp-for="Country" placeholder="Enter Country">
+                <span asp-validation-for="Country" class="text-danger"></span>
+                <span asp-description-for="Country"></span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="mb-3">
+                <label class="form-label" asp-for="GreenGrass">Green Grass</label>
+                <input class="form-control" asp-for="GreenGrass" placeholder="Enter a Green Grass">
+                
+                <span asp-description-for="GreenGrass"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="mb-3">
+                <label class="form-label" asp-for="FairwayGrass">Fairway Grass</label>
+                <input class="form-control" asp-for="FairwayGrass" placeholder="Enter Fairway Grass">
+                
+                <span asp-description-for="FairwayGrass"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="mb-3">
+                <label class="form-label" asp-for="Holes">Holes</label>
+                <input class="form-control" asp-for="Holes" placeholder="Enter number of Holes">
+                e
+                <span asp-description-for="Holes"></span>
+            </div>
+        </div>
+    </div>
+</div>

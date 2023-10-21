@@ -7,9 +7,13 @@
 <div class="page-header">
     <div class="row align-items-center">
         <div class="col-auto ml-auto d-print-none">
-            <a asp-action="CreateScoreCard" method="get" class="btn btn-primary mr-4 mb-2">
+            <a asp-action="" method="get" class="btn btn-primary mr-4 mb-2">
                 Add Golf Course
             </a>
+            <a asp-action="CourseDataFromAPI" method="get" class="btn btn-primary mr-4 mb-2">
+                Add Golf Course from API
+            </a>
+
         </div>
     </div>
 </div>
@@ -24,7 +28,6 @@
                     <th>City</th>
                     <th>Country</th>
                     <th>Holes</th>
-                    <th>Golf Course</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -51,11 +54,11 @@
                 success: function (data) {
                     $.each(data, function (key, value) {
                         var Id = "<input type='hidden' value=" + value.id + " />";
-                        var editbtn = `<a href="/ScoreCard/EditScoreCard/${value.id}" class="fa fa-eye" style="color: darkslategray; margin-left: 66px;margin-right: 23px;"></a>`;
-                        var removebtn = `<a href="/ScoreCard/DeleteScorecard/${value.id}" class="fa fa-trash danger" style="color: indianred;"></a>`;
+                        var editbtn = `<a href="/Course/EditCourse/${value.id}" class="fa fa-eye" style="color: darkslategray; margin-left: 66px;margin-right: 23px;"></a>`;
+                        var removebtn = `<a href="/Course/Delete/${value.id}" class="fa fa-trash danger" style="color: indianred;"></a>`;
                         var action = editbtn + removebtn + Id;
 
-                        empdata.push([value.name, value.city, value.country, value.holes, value.golfCourse, action]);
+                        empdata.push([value.name, value.city, value.country, value.holes, action]);
                     });
                 },
                 error: function (xhr, status, error) {

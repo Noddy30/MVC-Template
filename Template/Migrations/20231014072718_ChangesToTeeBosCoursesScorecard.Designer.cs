@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Template.Data;
 
@@ -10,9 +11,10 @@ using Template.Data;
 namespace Template.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231014072718_ChangesToTeeBosCoursesScorecard")]
+    partial class ChangesToTeeBosCoursesScorecard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,8 +228,9 @@ namespace Template.Migrations
 
             modelBuilder.Entity("Template.Areas.Identity.Data.Models.Courses.GolfCourse", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -245,6 +248,9 @@ namespace Template.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -259,6 +265,9 @@ namespace Template.Migrations
                     b.Property<int>("Holes")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("LengthFormat")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -268,6 +277,10 @@ namespace Template.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PublicId")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -300,9 +313,6 @@ namespace Template.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("GolfCourseId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<int>("Handicap")
                         .HasColumnType("int");
 
@@ -319,14 +329,11 @@ namespace Template.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("TeesId")
-                        .HasColumnType("int");
+                    b.Property<string>("Tees")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GolfCourseId");
-
-                    b.HasIndex("TeesId");
 
                     b.ToTable("ScoreCards");
                 });
@@ -337,15 +344,11 @@ namespace Template.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("GolfCourseId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<double>("Handicap")
+                        .HasColumnType("double");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -354,12 +357,14 @@ namespace Template.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Yards")
-                        .HasColumnType("int");
+                    b.Property<double>("Slope")
+                        .HasColumnType("double");
+
+                    b.Property<string>("Tee")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GolfCourseId");
 
                     b.ToTable("TeeBoxes");
                 });
@@ -417,24 +422,24 @@ namespace Template.Migrations
 
             modelBuilder.Entity("Template.Areas.Identity.Data.Models.ScoreCards.ScoreCard", b =>
                 {
-                    b.HasOne("Template.Areas.Identity.Data.Models.Courses.GolfCourse", null)
+                    b.HasOne("Template.Areas.Identity.Data.Models.Courses.GolfCourse", "GolfCourse")
                         .WithMany("Scorecard")
-                        .HasForeignKey("GolfCourseId");
-
-                    b.HasOne("Template.Areas.Identity.Data.Models.TeeBoxes.TeeBox", "Tees")
-                        .WithMany()
-                        .HasForeignKey("TeesId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Tees");
+                    b.Navigation("GolfCourse");
                 });
 
             modelBuilder.Entity("Template.Areas.Identity.Data.Models.TeeBoxes.TeeBox", b =>
                 {
-                    b.HasOne("Template.Areas.Identity.Data.Models.Courses.GolfCourse", null)
+                    b.HasOne("Template.Areas.Identity.Data.Models.Courses.GolfCourse", "GolfCourse")
                         .WithMany("TeeBoxes")
-                        .HasForeignKey("GolfCourseId");
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GolfCourse");
                 });
 
             modelBuilder.Entity("Template.Areas.Identity.Data.Models.Courses.GolfCourse", b =>

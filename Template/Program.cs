@@ -36,6 +36,7 @@ namespace Template
             builder.Services.AddTransient<ICourseRepository, CourseRepository>();
             builder.Services.AddTransient<IScoreCardRepository, ScoreCardRepository>();
             builder.Services.AddTransient<ITeeBoxRepository, TeeBoxRepository>();
+            builder.Services.AddTransient<IRYZEGolfService, RYZEGolfService>();
 
 
             builder.Services.AddDbContext<AppDbContext>(options =>

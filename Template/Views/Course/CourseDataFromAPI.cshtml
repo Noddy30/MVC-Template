@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Courses";
+}
+@{
+    Layout = "~/Views/Shared/_BackendLayout.cshtml";
+}
+
+<div class="card card-default">
+    <div class="card-body">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Please Enter Golf Course name </label>
+                    <input class="form-control" id="golf-course-name" placeholder="Enter Golf Course name">
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <a class="btn btn-primary mr-4 mb-2" onclick="PostCourseSearch()">
+                Search Course
+            </a>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        function PostCourseSearch() {
+            debugger;
+            var courseName = document.getElementById("golf-course-name").value;
+
+            $.ajax({
+                url: "@Url.Action("GetCourseDataFromAPI", "Course")",
+                type: "Get",
+                async: true,
+                data: { courseName: courseName },
+                success: function (data) {
+
+                },
+                error: function (xhr, exception, thrownError) {
+
+                }
+            });
+        }
+
+
+    </script>
+}

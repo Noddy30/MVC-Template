@@ -17,6 +17,7 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -2104,6 +2105,7 @@
     <None Remove="Views\ScoreCard\Partial\" />
     <None Remove="Views\TeeBox\" />
     <None Remove="Views\TeeBox\Partial\" />
+    <None Remove="Views\Course\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2137,6 +2139,7 @@
     <Folder Include="Views\ScoreCard\Partial\" />
     <Folder Include="Views\TeeBox\" />
     <Folder Include="Views\TeeBox\Partial\" />
+    <Folder Include="Views\Course\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />

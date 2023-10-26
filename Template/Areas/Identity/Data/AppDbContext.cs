@@ -16,6 +16,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<GolfCourse> GolfCourses { get; set; }
     public DbSet<ScoreCard> ScoreCards { get; set; }
     public DbSet<TeeBox> TeeBoxes { get; set; }
+    public DbSet<Tees> Tees { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)

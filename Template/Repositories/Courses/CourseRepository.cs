@@ -1,21 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Template.Areas.Identity.Data;
 using Template.Areas.Identity.Data.Models.Courses;
 using Template.Areas.Identity.Data.Models.ScoreCards;
+using Template.Areas.Identity.Data.PaginationDataTables;
+using Template.Areas.Identity.Data.Viewmodels.Courses;
 using Template.Data;
+using Template.Helpers;
 
 namespace Template.Repositories.Courses
 {
 	public interface ICourseRepository
 	{
         Task CreateAsync(GolfCourse model);
-        Task UpdateAsync(string id);
+        Task UpdateAsync(string id, GolfCourseViewModel viewModel);
         Task<GolfCourse?> GetModelAsync(string id);
         Task DeleteAsync(string id);
         //Task RestoreAsync(string id);
         Task<List<GolfCourse?>> GetAllCoursesAsync();
+        Task<string> GetPaginated(GolfCoursePagination model);
     }
     public class CourseRepository : ICourseRepository
     {
@@ -42,13 +51,16 @@ namespace Template.Repositories.Courses
             _dbcontext.GolfCourses.Remove(model);
             await _dbcontext.SaveChangesAsync();
 
-            //model.IsDeleted = true;
-            //await _dbcontext.SaveChangesAsync();
         }
 
         public async Task<GolfCourse?> GetModelAsync(string id)
         {
-            var model = await _dbcontext.GolfCourses.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var model = await _dbcontext.GolfCourses
+                .Include(i => i.Scorecard)
+                    .ThenInclude(t => t.Tees)
+                .Include(i => i.TeeBoxes)
+                .Where(x => x.Id == id).FirstOrDefaultAsync();
+
             if (model == null)
             {
                 return null;
@@ -68,11 +80,33 @@ namespace Template.Repositories.Courses
         //    await _dbcontext.SaveChangesAsync();
         //}
 
-        public async Task UpdateAsync(string id)
+        public async Task UpdateAsync(string id, GolfCourseViewModel viewModel)
         {
-            var course = await _dbcontext.GolfCourses.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var course = await _dbcontext.GolfCourses.FirstOrDefaultAsync(x => x.Id == id);
 
-            _dbcontext.GolfCourses.Update(course);
+            if (course == null)
+            {
+                // Handle the case where the course with the given id is not found.
+                // You can throw an exception or handle it as appropriate for your application.
+                return;
+            }
+
+            course.Name = viewModel.Name;
+            course.Phone = viewModel.Phone;
+            course.Website = viewModel.Website;
+            course.Address = viewModel.Address;
+            course.City = viewModel.City;
+            course.State = viewModel.State;
+            course.Zip = viewModel.Zip;
+            course.Country = viewModel.Country;
+            course.Coordinates = viewModel.Coordinates;
+            course.Holes = viewModel.Holes;
+            course.GreenGrass = viewModel.GreenGrass;
+            course.FairwayGrass = viewModel.FairwayGrass;
+
+            course.UpdatedAt = DateTime.UtcNow;
+
+            // Save the changes to the database.
             await _dbcontext.SaveChangesAsync();
         }
 
@@ -86,6 +120,105 @@ namespace Template.Repositories.Courses
             }
             return model;
         }
+        public async Task<string> GetPaginated(GolfCoursePagination model)
+        {
+            var data = _dbcontext.GolfCourses.AsQueryable();
+
+            // Apply search filter if it's provided
+            if (!string.IsNullOrEmpty(model.SearchFilter))
+            {
+                data = data.Where(x => x.Name.ToUpper().Contains(model.SearchFilter.ToUpper()) ||
+                                       x.City.ToUpper().Contains(model.SearchFilter.ToUpper()) ||
+                                       x.Country.ToUpper().Contains(model.SearchFilter.ToUpper()) ||
+                                       x.Holes.ToString().Contains(model.SearchFilter));
+            }
+
+            // Determine the sort direction
+            bool isAscending = model.SortDir_0 == "asc";
+
+            // Sort the data based on the column index
+            data = model.SortCol_0 switch
+            {
+                0 => (isAscending) ? data.OrderBy(x => x.Name) : data.OrderByDescending(x => x.Name),
+                1 => (isAscending) ? data.OrderBy(x => x.City) : data.OrderByDescending(x => x.City),
+                2 => (isAscending) ? data.OrderBy(x => x.Country) : data.OrderByDescending(x => x.Country),
+                3 => (isAscending) ? data.OrderBy(x => x.Holes) : data.OrderByDescending(x => x.Holes),
+                _ => data // Handle default case if needed
+            };
+
+            var totalCount = await data.CountAsync();
+
+            var displayedMembers = await data
+                .Skip(model.DisplayStart)
+                .Take(model.DisplayLength)
+                .Select(a => new
+                {
+                    Name = a.Name,
+                    Id = a.Id,
+                    City = a.City,
+                    Country = a.Country,
+                    Holes = a.Holes
+                })
+                .ToListAsync();
+
+            var result = new
+            {
+                Echo = model.Echo,
+                TotalRecords = totalCount,
+                TotalDisplayRecords = totalCount,
+                data = displayedMembers
+            };
+
+            return JsonConvert.SerializeObject(result);
+        }
+        //public async Task<string> GetPaginated(GolfCoursePagination model)
+        //{
+        //    var data = _dbcontext.GolfCourses.AsQueryable();
+        //    int pageSize = model.DisplayLength; // Number of records that should be shown in table
+        //    int pageNumber = (model.DisplayStart / pageSize) + 1;
+        //    var count = data.Count();
+        //    if (!string.IsNullOrEmpty(model.SearchFilter))
+        //    {
+        //        data = data.Where(x => x.Name.ToUpper().Contains(model.SearchFilter.ToUpper()));
+        //    }
+
+        //    string propertyName = model.SortCol_0 switch
+        //    {
+        //        0 => "Name",
+        //        1 => "City",
+        //        2 => "Country",
+        //        4 => "Holes",
+        //        _ => "",
+        //    };
+
+        //    data = data.OrderByProperty(propertyName, model.SortDir_0 == "asc");
+        //    var count2 = data.Count();
+        //    var totalCount = await data.CountAsync();
+
+        //    var displayedMembers = await data
+        //        .Skip(model.DisplayStart)
+        //        .Take(model.DisplayLength)
+        //        .Select(a => new
+        //        {
+        //            Name = a.Name,
+        //            Id = a.Id,
+        //            City = a.City,
+        //            Country = a.Country,
+        //            Holes = a.Holes
+        //        })
+        //        .ToListAsync();
+        //    var resultCount = displayedMembers.Count();
+        //    var result = new
+        //    {
+        //        Echo = model.Echo,
+        //        TotalRecords = totalCount,
+        //        TotalDisplayRecords = totalCount,
+        //        data = displayedMembers
+        //    };
+
+        //    return JsonConvert.SerializeObject(result);
+        //}
+
     }
 }
 

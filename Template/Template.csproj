@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.21" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.21">
@@ -18,6 +19,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -2106,6 +2108,12 @@
     <None Remove="Views\TeeBox\" />
     <None Remove="Views\TeeBox\Partial\" />
     <None Remove="Views\Course\Partial\" />
+    <None Remove="Areas\Identity\Data\PaginationDataTables\" />
+    <None Remove="Helpers\" />
+    <None Remove="Areas\Identity\Data\MapperProfiles\" />
+    <None Remove="Controllers\FrontEndControllers\" />
+    <None Remove="Views\FrontEndViews\" />
+    <None Remove="Views\FrontEndViews\HomeFrontEnd\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2140,6 +2148,12 @@
     <Folder Include="Views\TeeBox\" />
     <Folder Include="Views\TeeBox\Partial\" />
     <Folder Include="Views\Course\Partial\" />
+    <Folder Include="Areas\Identity\Data\PaginationDataTables\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Areas\Identity\Data\MapperProfiles\" />
+    <Folder Include="Controllers\FrontEndControllers\" />
+    <Folder Include="Views\FrontEndViews\" />
+    <Folder Include="Views\FrontEndViews\HomeFrontEnd\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />

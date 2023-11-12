@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Template.Migrations
 {
-    public partial class CleanUpAndCoursesAndBaseModels : Migration
+    public partial class CoursesScoreCardsTeesBaseModelAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,35 +44,31 @@ namespace Template.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Phone = table.Column<string>(type: "longtext", nullable: false)
+                    Phone = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Website = table.Column<string>(type: "longtext", nullable: false)
+                    Website = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Address = table.Column<string>(type: "longtext", nullable: false)
+                    Address = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    City = table.Column<string>(type: "longtext", nullable: false)
+                    City = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    State = table.Column<string>(type: "longtext", nullable: false)
+                    State = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Zip = table.Column<string>(type: "longtext", nullable: false)
+                    Zip = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Country = table.Column<string>(type: "longtext", nullable: false)
+                    Country = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Coordinates = table.Column<string>(type: "longtext", nullable: false)
+                    Coordinates = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Holes = table.Column<int>(type: "int", nullable: false),
-                    LengthFormat = table.Column<string>(type: "longtext", nullable: false)
+                    Holes = table.Column<int>(type: "int", nullable: true),
+                    LengthFormat = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    GreenGrass = table.Column<string>(type: "longtext", nullable: false)
+                    GreenGrass = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    FairwayGrass = table.Column<string>(type: "longtext", nullable: false)
+                    FairwayGrass = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    PublicId = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,12 +82,10 @@ namespace Template.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Hole = table.Column<int>(type: "int", nullable: false),
-                    Par = table.Column<int>(type: "int", nullable: false),
-                    Tees = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Handicap = table.Column<int>(type: "int", nullable: false),
-                    GolfCourseId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Hole = table.Column<int>(type: "int", nullable: true),
+                    Par = table.Column<int>(type: "int", nullable: true),
+                    Handicap = table.Column<float>(type: "float", nullable: true),
+                    GolfCourseId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PublicId = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -105,8 +99,7 @@ namespace Template.Migrations
                         name: "FK_ScoreCards_GolfCourses_GolfCourseId",
                         column: x => x.GolfCourseId,
                         principalTable: "GolfCourses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -116,11 +109,11 @@ namespace Template.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Tee = table.Column<string>(type: "longtext", nullable: false)
+                    Tee = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Slope = table.Column<double>(type: "double", nullable: false),
-                    Handicap = table.Column<double>(type: "double", nullable: false),
-                    GolfCourseId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Slope = table.Column<int>(type: "int", nullable: true),
+                    Handicap = table.Column<float>(type: "float", nullable: true),
+                    GolfCourseId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PublicId = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -134,8 +127,33 @@ namespace Template.Migrations
                         name: "FK_TeeBoxes_GolfCourses_GolfCourseId",
                         column: x => x.GolfCourseId,
                         principalTable: "GolfCourses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Tees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Color = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Yards = table.Column<float>(type: "float", nullable: true),
+                    ScoreCardId = table.Column<int>(type: "int", nullable: true),
+                    PublicId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tees_ScoreCards_ScoreCardId",
+                        column: x => x.ScoreCardId,
+                        principalTable: "ScoreCards",
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -148,15 +166,23 @@ namespace Template.Migrations
                 name: "IX_TeeBoxes_GolfCourseId",
                 table: "TeeBoxes",
                 column: "GolfCourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tees_ScoreCardId",
+                table: "Tees",
+                column: "ScoreCardId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ScoreCards");
+                name: "TeeBoxes");
 
             migrationBuilder.DropTable(
-                name: "TeeBoxes");
+                name: "Tees");
+
+            migrationBuilder.DropTable(
+                name: "ScoreCards");
 
             migrationBuilder.DropTable(
                 name: "GolfCourses");

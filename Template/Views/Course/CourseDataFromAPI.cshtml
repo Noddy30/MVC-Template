@@ -27,25 +27,28 @@
 @section Scripts
 {
     <script>
-
         function PostCourseSearch() {
             debugger;
             var courseName = document.getElementById("golf-course-name").value;
 
             $.ajax({
                 url: "@Url.Action("GetCourseDataFromAPI", "Course")",
-                type: "Get",
+                type: "GET",
                 async: true,
                 data: { courseName: courseName },
-                success: function (data) {
-
+                success: function (data, textStatus, xhr) {
+                    if (xhr.status === 200) {
+                        swal("Success!", data, "success");
+                    } else if (xhr.status === 404) {
+                        swal("No Results", data, "warning");
+                    } else {
+                        swal("Error", "An error occurred while processing your request.", "error");
+                    }
                 },
                 error: function (xhr, exception, thrownError) {
-
+                    swal("Error", "An error occurred while processing your request.", "error");
                 }
             });
         }
-
-
     </script>
 }

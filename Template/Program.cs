@@ -11,6 +11,8 @@ using Template.Repositories.ScoreCards;
 using Template.Repositories.TeeBoxes;
 using Template.Repositories.Users;
 using Template.Services;
+using AutoMapper;
+using Template.Areas.Identity.Data.MapperProfiles;
 
 namespace Template
 {
@@ -28,6 +30,8 @@ namespace Template
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            //Automapper
+            builder.Services.AddAutoMapper(typeof(TeesProfile), typeof(TeeBoxProfile), typeof(ScoreCardProfile), typeof(GolfCourseProfile),typeof(Program));
 
             // Add Repositories
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
@@ -64,12 +68,20 @@ namespace Template
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=HomeFrontEnd}/{action=Index}/{id?}");
+
                 endpoints.MapRazorPages();
             });
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            //app.MapControllerRoute(
+            //    name: "default",
+            //    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
             // Seed Roles

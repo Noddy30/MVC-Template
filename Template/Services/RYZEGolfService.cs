@@ -1,98 +1,76 @@
 ﻿using System;
 using System.Net.Http.Headers;
+using AutoMapper;
 using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Template.Areas.Identity.Data.Models.Courses;
 using Template.Areas.Identity.Data.Models.TeeBoxes;
+using Template.Areas.Identity.Data.Viewmodels.Courses;
 using Template.Data;
 
 namespace Template.Services
 {
     public interface IRYZEGolfService
     {
-        Task<List<GolfCourse>> GetGolfCoursesAsync(string courseName);
-        Task SaveGolfCoursesAsync(List<GolfCourse> golfCourses);
+        Task<List<GolfCourseViewModel>> GetGolfCoursesAsync(string courseName);
+        Task SaveGolfCoursesAsync(List<GolfCourseViewModel> golfCourses);
     }
     public class RYZEGolfService : IRYZEGolfService
     {
         private readonly AppDbContext _dbContext;
         private readonly string _rapidApiKey = "1ea3857bc7mshb3904505b436e6fp123a91jsn8d255db118e5";
         private readonly HttpClient _httpClient;
+        private readonly IMapper _mapper;
 
-        public RYZEGolfService(AppDbContext dbContext)
+        public RYZEGolfService(AppDbContext dbContext, IMapper mapper)
 		{
             _dbContext = dbContext;
+            _mapper = mapper;
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Add("X-RapidAPI-Key", _rapidApiKey);
             _httpClient.DefaultRequestHeaders.Add("X-RapidAPI-Host", "golf-course-api.p.rapidapi.com");
         }
 
-        public async Task<List<GolfCourse>> GetGolfCoursesAsync(string courseName)
-        {
-            var response = await _httpClient.GetAsync($"https://golf-course-api.p.rapidapi.com/search?name={courseName}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                var golfCourses = JsonConvert.DeserializeObject<List<GolfCourse>>(body);
-
-                foreach (var course in golfCourses)
-                {
-                    foreach (var teeBox in course.TeeBoxes)
-                    {
-                        // Check and set default color if Color is null or empty
-                        if (string.IsNullOrEmpty(teeBox.Color))
-                        {
-                            teeBox.Color = "Default Color";
-                        }
-                    }
-                }
-
-                return golfCourses;
-            }
-
-            // Handle error cases if necessary
-            return null;
-        }
-
-        //public async Task<string> GetCourseData(string courseName)
-        //{
-        //    try
-        //    {
-        //        var client = new HttpClient();
-        //        var request = new HttpRequestMessage
-        //        {
-        //            Method = HttpMethod.Get,
-        //            RequestUri = new Uri("https://golf-course-api.p.rapidapi.com/search?name=" + courseName),
-        //            Headers =
-        //            {
-        //                { "X-RapidAPI-Key", "1ea3857bc7mshb3904505b436e6fp123a91jsn8d255db118e5" },
-        //                { "X-RapidAPI-Host", "golf-course-api.p.rapidapi.com" },
-        //            },
-        //        };
-        //        using (var response = await client.SendAsync(request))
-        //        {
-        //            response.EnsureSuccessStatusCode();
-        //            var body = await response.Content.ReadAsStringAsync();
-        //            Console.WriteLine(body);
-        //            var golfCourses = JsonConvert.DeserializeObject<List<GolfCourse>>(body);
-        //            return body;
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-
-        //}
-
-        public async Task SaveGolfCoursesAsync(List<GolfCourse> golfCourses)
+        public async Task<List<GolfCourseViewModel>> GetGolfCoursesAsync(string courseName)
         {
             try
             {
-                foreach (var golfCourse in golfCourses)
+                var response = await _httpClient.GetAsync($"https://golf-course-api.p.rapidapi.com/search?name={courseName}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var body = await response.Content.ReadAsStringAsync();
+
+                    try
+                    {
+                        GolfCourseViewModel golfCourse = JsonConvert.DeserializeObject<GolfCourseViewModel>(body);
+                        return new List<GolfCourseViewModel> { golfCourse };
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        List<GolfCourseViewModel> golfCourses = JsonConvert.DeserializeObject<List<GolfCourseViewModel>>(body);
+                        return golfCourses;
+                    }
+                }
+
+                // Handle error cases if necessary
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task SaveGolfCoursesAsync(List<GolfCourseViewModel> golfCourses)
+        {
+            try
+            {
+                // Map GolfCourseViewModel to GolfCourse using AutoMapper
+                var golfCourseEntities = _mapper.Map<List<GolfCourse>>(golfCourses);
+
+                foreach (var golfCourse in golfCourseEntities)
                 {
                     var existingCourse = _dbContext.GolfCourses.FirstOrDefault(c => c.Name == golfCourse.Name);
 
@@ -114,7 +92,7 @@ namespace Template.Services
             {
                 throw ex;
             }
-            
+
         }
     }
 }

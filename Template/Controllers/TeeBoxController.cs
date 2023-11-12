@@ -1,11 +1,13 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Template.Repositories.TeeBoxes;
 
 namespace Template.Controllers
 {
-	public class TeeBoxController : Controller
+    [Authorize(Roles = "SuperAdmin")]
+    public class TeeBoxController : Controller
 	{
         private readonly ILogger<ScoreCardController> _logger;
         private readonly ITeeBoxRepository _teeBoxRepository;

@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Template.Areas.Identity.Data;
 using Template.Areas.Identity.Data.Models.ScoreCards;
 using Template.Areas.Identity.Data.Models.TeeBoxes;
+using Template.Areas.Identity.Data.PaginationDataTables;
 using Template.Data;
 
 namespace Template.Repositories.ScoreCards
@@ -92,6 +94,55 @@ namespace Template.Repositories.ScoreCards
             _dbcontext.ScoreCards.Update(model);
             await _dbcontext.SaveChangesAsync();
         }
+
+        //public async Task<string> GetPaginated(ScoreCardPagination model)
+        //{
+        //    var data = _dbcontext.ScoreCards.AsQueryable();
+
+        //    // Apply search filter if it's provided
+        //    if (!string.IsNullOrEmpty(model.CourseId))
+        //    {
+        //        data = data.Where(x => x.GofToString().Contains(model.CourseId.ToUpper()));
+        //    }
+
+        //    // Determine the sort direction
+        //    bool isAscending = model.SortDir_0 == "asc";
+
+        //    // Sort the data based on the column index
+        //    //data = model.SortCol_0 switch
+        //    //{
+        //    //    0 => (isAscending) ? data.OrderBy(x => x.Name) : data.OrderByDescending(x => x.Name),
+        //    //    1 => (isAscending) ? data.OrderBy(x => x.City) : data.OrderByDescending(x => x.City),
+        //    //    2 => (isAscending) ? data.OrderBy(x => x.Country) : data.OrderByDescending(x => x.Country),
+        //    //    3 => (isAscending) ? data.OrderBy(x => x.Holes) : data.OrderByDescending(x => x.Holes),
+        //    //    _ => data // Handle default case if needed
+        //    //};
+
+        //    var totalCount = await data.CountAsync();
+
+        //    var displayedMembers = await data
+        //        .Skip(model.DisplayStart)
+        //        .Take(model.DisplayLength)
+        //        .Select(a => new
+        //        {
+        //            Id = a.Id,
+        //            PublicId = a.PublicId,
+        //            Hole = a.Hole,
+        //            Par = a.Par,
+        //            Handicap = a.Handicap
+        //        })
+        //        .ToListAsync();
+
+        //    var result = new
+        //    {
+        //        Echo = model.Echo,
+        //        TotalRecords = totalCount,
+        //        TotalDisplayRecords = totalCount,
+        //        data = displayedMembers
+        //    };
+
+        //    return JsonConvert.SerializeObject(result);
+        //}
     }
 }
 

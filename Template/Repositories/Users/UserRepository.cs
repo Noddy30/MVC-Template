@@ -98,7 +98,9 @@ namespace Template.Repositories.Users
                 PhoneNumber = viewModel.PhoneNumber,
                 FirstName = viewModel.Name,
                 LastName = viewModel.LastName,
-                UserName = viewModel.Email
+                UserName = viewModel.Email,
+                IsDeleted = false
+                
             };
 
             var result = await _userManager.CreateAsync(userModel);

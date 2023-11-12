@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Template.Areas.Identity.Data.Models.ScoreCards;
@@ -13,7 +14,8 @@ using Template.Services;
 
 namespace Template.Controllers
 {
-	public class CourseController : Controller
+    [Authorize(Roles = "SuperAdmin")]
+    public class CourseController : Controller
 	{
 		public readonly ICourseRepository _courseRepository;
 		public readonly IRYZEGolfService _RYZEGolfService;
@@ -78,42 +80,7 @@ namespace Template.Controllers
                 return View();
             }
             var viewModel = _mapper.Map<GolfCourseViewModel>(model);
-            //var scorecardViewModels = model.Scorecard.Select(sc => new ScoreCardViewModel
-            //{
-            //    Hole = sc.Hole,
-            //    Par = sc.Par,
-            //    Handicap = sc.Handicap,
-            //    Tees = sc.Tees
-            //    // Map other properties from ScoreCard entity to ScoreCardViewModel properties
-            //}).ToList();
-
-            //var teeboxViewModels = model.TeeBoxes.Select(tb => new TeeBoxViewModel
-            //{
-            //    Tee = tb.Tee,
-            //    Slope = tb.Slope,
-            //    Handicap = tb.Handicap
-            //    // Map other properties from TeeBox entity to TeeBoxViewModel properties
-            //}).ToList();
-
-            //var viewModel = new GolfCourseViewModel()
-            //{
-            //    Id = model.Id,
-            //    Name = model.Name,
-            //    Phone = string.IsNullOrEmpty(model.Phone) ? "" : model.Phone,
-            //    Website = string.IsNullOrEmpty(model.Website) ? "" : model.Website,
-            //    Address = string.IsNullOrEmpty(model.Address) ? "" : model.Address,
-            //    City = string.IsNullOrEmpty(model.City) ? "" : model.City,
-            //    State = string.IsNullOrEmpty(model.State) ? "" : model.State,
-            //    Zip = string.IsNullOrEmpty(model.Zip) ? "" : model.Zip,
-            //    Country = string.IsNullOrEmpty(model.Country) ? "" : model.Country,
-            //    Coordinates = string.IsNullOrEmpty(model.Coordinates) ? "" : model.Coordinates,
-            //    Holes = model.Holes.HasValue ? model.Holes.Value : 0,
-            //    GreenGrass = string.IsNullOrEmpty(model.GreenGrass) ? "" : model.GreenGrass,
-            //    FairwayGrass = string.IsNullOrEmpty(model.FairwayGrass) ? "" : model.FairwayGrass,
-            //    Scorecard = scorecardViewModels,
-            //    TeeBoxes = teeboxViewModels,
-            //};
-
+            
             return View(viewModel);
         }
 

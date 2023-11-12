@@ -2111,6 +2111,9 @@
     <None Remove="Areas\Identity\Data\PaginationDataTables\" />
     <None Remove="Helpers\" />
     <None Remove="Areas\Identity\Data\MapperProfiles\" />
+    <None Remove="Controllers\FrontEndControllers\" />
+    <None Remove="Views\FrontEndViews\" />
+    <None Remove="Views\FrontEndViews\HomeFrontEnd\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Shared\_Partial\" />
@@ -2148,6 +2151,9 @@
     <Folder Include="Areas\Identity\Data\PaginationDataTables\" />
     <Folder Include="Helpers\" />
     <Folder Include="Areas\Identity\Data\MapperProfiles\" />
+    <Folder Include="Controllers\FrontEndControllers\" />
+    <Folder Include="Views\FrontEndViews\" />
+    <Folder Include="Views\FrontEndViews\HomeFrontEnd\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />

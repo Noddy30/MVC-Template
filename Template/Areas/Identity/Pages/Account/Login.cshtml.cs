@@ -121,6 +121,13 @@ namespace Template.Areas.Identity.Pages.Account
             if (!string.IsNullOrEmpty(Login.Email) && !string.IsNullOrEmpty(Login.Password))
             {
                 // The form data indicates a login attempt
+                //var signedInUser = await _signInManager.UserManager.FindByEmailAsync(Login.Email);
+                //var role = await _signInManager.UserManager.GetRolesAsync(signedInUser);
+                //if (role.Contains(Role.User))
+                //{
+                //    returnUrl = Url.Content("~/HomeFrontEnd/Index");
+                //}
+
                 var result = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, Login.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {

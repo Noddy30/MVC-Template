@@ -100,240 +100,116 @@
             </div>
         </div>
     </div>
+    <hr />
+    <h4>Course Tee Box Info</h4>
+    <hr />
+    @for (int i = 0; i < Model.TeeBoxes.Count; i++)
+    {
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label class="form-label" asp-for="@Model.TeeBoxes[i].Tee">Tee</label>
+                    <input class="form-control" asp-for="@Model.TeeBoxes[i].Tee" placeholder="Tee name">
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label class="form-label" asp-for="@Model.TeeBoxes[i].Handicap">Course tee Handicap</label>
+                    <input class="form-control" asp-for="@Model.TeeBoxes[i].Handicap" placeholder="Course handicap">
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label class="form-label" asp-for="@Model.TeeBoxes[i].Slope">Slope</label>
+                    <input class="form-control" asp-for="@Model.TeeBoxes[i].Slope" placeholder="Slope">
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 <hr />
+<h1>Scorecard</h1>
 <div class="card card-default">
     <div class="card-body table-responsive">
         <table id="scoreCardTable" class="table table-condensed table-bordered">
             <tbody class="center">
-                <tr class="primary text-center">
+                <!-- Hole -->
+                <tr class="primary text-center" style="background: #4e8658">
                     <th class="text-left">Hole</th>
-                    @foreach (var scoreCardItem in Model.Scorecard.Take(9))
+                    @for (int i = 0; i < 9; i++)
                     {
-                        <td>@scoreCardItem.Hole</td>
+                        <td><input hidden asp-for="@Model.Scorecard[i].Hole" /> @Model.Scorecard[i].Hole</td>
                     }
-                    <th class="text-left">Out</th>
-                    @foreach (var scoreCardItem in Model.Scorecard.Skip(9).Take(9))
+                    <th class="text-left" style="background: #3b4d5e;">Out</th>
+                    @for (int i = 9; i < 18; i++)
                     {
-                        <td>@scoreCardItem.Hole</td>
+                        <td><input hidden asp-for="@Model.Scorecard[i].Hole" /> @Model.Scorecard[i].Hole</td>
                     }
-                    <th class="text-left">In</th>
-                </tr>
-                <tr>
-                    <th class="text-uppercase"><strong>Stroke</strong></th>
-                    @foreach (var scoreCardItem in Model.Scorecard.Take(9))
-                    {
-                        <td>@scoreCardItem.Handicap</td>
-                    }
-                    <td><strong></strong></td>
-
-                    @foreach (var scoreCardItem in Model.Scorecard.Skip(9).Take(9))
-                    {
-                        <td>@scoreCardItem.Handicap</td>
-                    }
-
-                    <td></td>
-                    <th class="text-uppercase"></th>
-                </tr>
-                <tr>
-                    <th class="text-uppercase"><strong>Par</strong></th>
-                    @foreach (var scoreCardItem in Model.Scorecard.Take(9))
-                    {
-                        <td>@scoreCardItem.Par</td>
-                    }
-                    <td><strong>@Model.Scorecard.Take(9).Sum(item => item.Par)</strong></td>
-
-                    @foreach (var scoreCardItem in Model.Scorecard.Skip(9).Take(9))
-                    {
-                        <td>@scoreCardItem.Par</td>
-                    }
-
-                    <td><strong>@Model.Scorecard.Skip(9).Take(9).Sum(item => item.Par)</strong></td>
+                    <th class="text-left" style="background: #3b4d5e;">In</th>
                     <th class="text-uppercase">Total</th>
                 </tr>
+                <!-- Handicap -->
+                <tr class="primary text-center">
+                    <th class="text-left" style="background: #405644;">Hcp</th>
+                    @for (var i = 0; i < Model.Scorecard.Take(9).Count(); i++)
+                    {
+                        <td><input asp-for="@Model.Scorecard[i].Handicap" class="form-control" style="width: 50px;" type="text" /></td>
+                    }
+                    <th class="text-left" style="background: #3b4d5e;"></th>
+                    @for (var i = 0; i < Model.Scorecard.Skip(9).Take(9).Count(); i++)
+                    {
+                        <td><input asp-for="@Model.Scorecard[i].Handicap" class="form-control" style="width: 50px;" type="text" /></td>
+                    }
+                    <th class="text-left" style="background: #3b4d5e;"></th>
+                    <th class="text-uppercase" style="background: #405644;"></th>
+                </tr>
+                <!-- Par -->
+                <tr class="primary text-center">
+                    <th class="text-left" style="background: #405644;">Par</th>
+                    @for (var i = 0; i < Model.Scorecard.Take(9).Count(); i++)
+                    {
+                        <td><input asp-for="@Model.Scorecard[i].Par" class="form-control" style="width: 50px;" type="text" /></td>
+                    }
+                    <th class="text-left" style="background: #3b4d5e;">@Model.Scorecard.Take(9).Sum(item => item.Par ?? 0)</th>
+                    @for (var i = 0; i < Model.Scorecard.Skip(9).Take(9).Count(); i++)
+                    {
+                        <td><input asp-for="@Model.Scorecard[i].Par" class="form-control" style="width: 50px;" type="text" /></td>
+                    }
+                    <th class="text-left" style="background: #3b4d5e;">@Model.Scorecard.Skip(9).Take(9).Sum(item => item.Par ?? 0)</th>
+                    <th class="text-uppercase" style="background: #405644;"></th>
+                </tr>
 
-                <!-- Add other rows for Men's Handicap, Men's Par, Player 1, Women's Par, Women's Handicap here -->
+                <!-- Rows for tee colors and yards -->
+                @foreach (var teeColor in Model.Scorecard.SelectMany(sc => sc.Tees.Keys).Distinct())
+                {
+                    <tr>
+                        <td class="text-left" style="background: #405644;"><strong>@teeColor</strong></td>
+                        @for (int i = 0; i < 9; i++)
+                        {
+                            var yards = Model.Scorecard[i].Tees.ContainsKey(teeColor) ? Model.Scorecard[i].Tees[teeColor].Yards.ToString() : "";
+                            <td><input class="form-control" style="width: 50px;" type="text" asp-for="@Model.Scorecard[i].Tees[teeColor].Yards" value="@yards" /></td>
+                            @*<input hidden asp-for="@Model.Scorecard[i].Tees[teeColor].Id" />
+                            <input hidden asp-for="@Model.Scorecard[i].Tees[teeColor].PublicId" />*@
+
+                        }
+                        <td style="background: #3b4d5e;"><strong>@Model.Scorecard.Take(9).Sum(item => item.Tees.ContainsKey(teeColor) ? item.Tees[teeColor].Yards : 0)</strong></td>
+
+                        @for (int i = 9; i < 18; i++)
+                        {
+                            var yards = Model.Scorecard[i].Tees.ContainsKey(teeColor) ? Model.Scorecard[i].Tees[teeColor].Yards.ToString() : "";
+                            <td><input class="form-control" style="width: 50px;" type="text" asp-for="@Model.Scorecard[i].Tees[teeColor].Yards" value="@yards" /></td>
+                            @*<input hidden asp-for="@Model.Scorecard[i].Tees[teeColor].Id" />
+                            <input hidden asp-for="@Model.Scorecard[i].Tees[teeColor].PublicId" />*@
+                        }
+                        <td style="background: #3b4d5e;"><strong>@Model.Scorecard.Skip(9).Take(9).Sum(item => item.Tees.ContainsKey(teeColor) ? item.Tees[teeColor].Yards : 0)</strong></td>
+                        <td style="background: #405644;"><strong>@Model.Scorecard.Sum(item => item.Tees.ContainsKey(teeColor) ? item.Tees[teeColor].Yards : 0)</strong></td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </div>
-@*<div class="card card-default">
-    <div class="card-body table-responsive">
-        <table id="scoreCardTable" class="table table-condensed table-bordered">
-            <tbody class="center">
-                <tr class="success text-center">
-                    <th class="text-left">Hole</th>
-                    <td></td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td>7</td>
-                    <td>8</td>
-                    <td>9</td>
-                    <th class="text-uppercase"><strong>Out</strong></th>
-                    <td>10</td>
-                    <td>11</td>
-                    <td>12</td>
-                    <td>13</td>
-                    <td>14</td>
-                    <td>15</td>
-                    <td>16</td>
-                    <td>17</td>
-                    <td>18</td>
-                    <th class="text-uppercase">In</th>
-                    <th class="text-uppercase">Total</th>
-                </tr>
-                <tr class="text-center">
-                    <td class="text-left"><strong>White Tee</strong></td>
-                    <td>480</td>
-                    <td>150</td>
-                    <td>359</td>
-                    <td>320</td>
-                    <td>348</td>
-                    <td>380</td>
-                    <td>337</td>
-                    <td>187</td>
-                    <td>323</td>
-                    <td>2,884</td>
-                    <td>337</td>
-                    <td>291</td>
-                    <td>166</td>
-                    <td>309</td>
-                    <td>136</td>
-                    <td>518</td>
-                    <td>348</td>
-                    <td>383</td>
-                    <td>459</td>
-                    <td>3,147</td>
-                    <td>6,031</td>
-                </tr>
-                <tr class="danger text-center">
-                    <td class="text-left"><strong>Men's Handicap</strong></td>
-                    <td>6</td>
-                    <td>18</td>
-                    <td>12</td>
-                    <td>16</td>
-                    <td>14</td>
-                    <td>4</td>
-                    <td>2</td>
-                    <td>10</td>
-                    <td>8</td>
-                    <td></td>
-                    <td>11</td>
-                    <td>7</td>
-                    <td>13</td>
-                    <td>3</td>
-                    <td>17</td>
-                    <td>9</td>
-                    <td>5</td>
-                    <td>1</td>
-                    <td>15</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr id="par" class="text-center" style="background-color: black; color: white;">
-                    <td class="text-left"><strong>Men's Par</strong></td>
-                    <td>5</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>35</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>3</td>
-                    <td>5</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>36</td>
-                    <td>71</td>
-                </tr>
-                <tr class="score text-center">
-                    <td class="text-left"><strong>Player 1</strong></td>
-                    <td><input type="number" min="-3" max="8" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td id="out"></td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="8" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="7" /> </td>
-                    <td><input type="number" min="-3" max="8" /> </td>
-                    <td id="in"></td>
-                    <td id="total"></td>
-                </tr>
-                <tr id="par" class="text-center" style="background-color: black; color: white;">
-                    <td class="text-left"><strong>Women's Par</strong></td>
-                    <td>5</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>35</td>
-                    <td>4</td>
-                    <td>4</td>
-                    <td>3</td>
-                    <td>5</td>
-                    <td>3</td>
-                    <td>5</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>5</td>
-                    <td>38</td>
-                    <td>73</td>
-                </tr>
-                <tr class="danger text-center">
-                    <td class="text-left"><strong>Women's Handicap</strong></td>
-                    <td>3</td>
-                    <td>17</td>
-                    <td>11</td>
-                    <td>15</td>
-                    <td>5</td>
-                    <td>7</td>
-                    <td>1</td>
-                    <td>13</td>
-                    <td>9</td>
-                    <td></td>
-                    <td>12</td>
-                    <td>6</td>
-                    <td>14</td>
-                    <td>16</td>
-                    <td>18</td>
-                    <td>2</td>
-                    <td>4</td>
-                    <td>8</td>
-                    <td>10</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>*@
 @section Scripts
 {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.slim.js"></script>

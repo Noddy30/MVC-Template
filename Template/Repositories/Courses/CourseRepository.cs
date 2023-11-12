@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,10 +30,12 @@ namespace Template.Repositories.Courses
     public class CourseRepository : ICourseRepository
     {
         private readonly AppDbContext _dbcontext;
+        private readonly IMapper _mapper;
 
-        public CourseRepository(AppDbContext dbcontext)
+        public CourseRepository(AppDbContext dbcontext, IMapper mapper)
 		{
             _dbcontext = dbcontext;
+            _mapper = mapper;
         }
 
         public async Task CreateAsync(GolfCourse model)
@@ -68,21 +71,13 @@ namespace Template.Repositories.Courses
             return model;
         }
 
-        //public async Task RestoreAsync(string id)
-        //{
-        //    var model = await _dbcontext.GolfCourses
-        //        .IgnoreQueryFilters()
-        //        .FirstOrDefaultAsync(x => x.Id == id);
-
-        //    model.IsDeleted = false;
-
-        //    _dbcontext.Update(model);
-        //    await _dbcontext.SaveChangesAsync();
-        //}
-
         public async Task UpdateAsync(string id, GolfCourseViewModel viewModel)
         {
-            var course = await _dbcontext.GolfCourses.FirstOrDefaultAsync(x => x.Id == id);
+            var course = await _dbcontext.GolfCourses
+                .Include(i => i.Scorecard)
+                    .ThenInclude(t => t.Tees)
+                .Include(i => i.TeeBoxes)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (course == null)
             {
@@ -91,21 +86,9 @@ namespace Template.Repositories.Courses
                 return;
             }
 
-            course.Name = viewModel.Name;
-            course.Phone = viewModel.Phone;
-            course.Website = viewModel.Website;
-            course.Address = viewModel.Address;
-            course.City = viewModel.City;
-            course.State = viewModel.State;
-            course.Zip = viewModel.Zip;
-            course.Country = viewModel.Country;
-            course.Coordinates = viewModel.Coordinates;
-            course.Holes = viewModel.Holes;
-            course.GreenGrass = viewModel.GreenGrass;
-            course.FairwayGrass = viewModel.FairwayGrass;
-
             course.UpdatedAt = DateTime.UtcNow;
-
+            var model = _mapper.Map(viewModel, course);
+            
             // Save the changes to the database.
             await _dbcontext.SaveChangesAsync();
         }

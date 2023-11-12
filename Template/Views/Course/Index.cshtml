@@ -7,17 +7,16 @@
 <div class="page-header">
     <div class="row align-items-center">
         <div class="col-auto ml-auto d-print-none">
-            <a asp-action="" method="get" class="btn btn-primary mr-4 mb-2">
+            @*<a asp-action="" method="get" class="btn bg-olive mr-4 mb-2">
                 Add Golf Course
-            </a>
-            <a asp-action="CourseDataFromAPI" method="get" class="btn btn-primary mr-4 mb-2">
+            </a>*@
+            <a asp-action="CourseDataFromAPI" method="get" class="btn bg-olive mr-4 mb-2">
                 Add Golf Course from API
             </a>
 
         </div>
     </div>
 </div>
-
 
 <div class="card card-default">
     <div class="card-body table-responsive">
@@ -82,7 +81,7 @@
                         "bSortable": false,
                         'mRender': function (data) {
                             debugger;
-                            return '<a href="/Course/EditCourse/' + data + '" class="fa fa-eye" style="color: darkslategray; margin-left: 66px; margin-right: 23px;"></a>' +
+                            return '<a href="/Course/EditCourse/' + data + '" class="fa fa-eye" style="color: #40b300; margin-left: 66px; margin-right: 23px;"></a>' +
                                     '<a href="/Course/Delete/' + data + '" class="fa fa-trash danger" style="color: indianred;"></a>';
                         }
                     },

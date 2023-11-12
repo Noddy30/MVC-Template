@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Template.Areas.Identity.Data;
@@ -7,6 +8,7 @@ using Template.Repositories.Users;
 
 namespace Template.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class UserController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -1,10 +1,12 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Template.Repositories.ScoreCards;
 
 namespace Template.Controllers
 {
-	public class ScoreCardController : Controller
+    [Authorize(Roles = "SuperAdmin")]
+    public class ScoreCardController : Controller
     {
         private readonly ILogger<ScoreCardController> _logger;
         private readonly IScoreCardRepository _scoreCardRepository;

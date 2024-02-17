@@ -68,14 +68,19 @@ namespace Template
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
 
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=HomeFrontEnd}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "areaRoute",
+                    pattern: "{area:exists}/{controller=HomeFrontEnd}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=HomeFrontEnd}/{action=Index}/{id?}");
-
                 endpoints.MapRazorPages();
             });
 
@@ -115,7 +120,7 @@ namespace Template
                     user.UserName = email;
                     user.Email = email;
                     user.FirstName = "Eduan";
-                    user.LastName = "Name";
+                    user.LastName = "Naude";
                     user.PhoneNumber = "0837832973";
                     user.IsDeleted = false;
 
@@ -154,7 +159,7 @@ namespace Template
                     }
                 }
             }
-            
+
             app.Run();
         }
     }

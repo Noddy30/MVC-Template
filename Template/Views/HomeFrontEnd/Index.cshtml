@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    ViewData["Controller"] = "FrontEnd";
+
+    Layout = "~/Views/Shared/_FrontEndLayout.cshtml";
+}
+
+<div class="row">
+    @Html.Partial("/Views/HomeFrontEnd/Partial/_carouselPartial.cshtml")
+</div>
+<div class="row pt-3">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6 p-3">
+                    <div class="shadow-lg p-3 mb-5 bg-white rounded card">
+                        <div class="d-flex justify-content-center mb-3 mt-3 p-3">
+                            <i class="fa fa-map-pin fa-2xl" style="color: #1c692f;"></i>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h3>Where to next</h3>
+                        </div>
+                        <div class="input-group mb-3 mt-2">
+                            <input type="text" class="form-control" placeholder="Please enter a destination" aria-label="Destination">
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 p-3">
+                    <div class="shadow-lg p-3 mb-5 bg-white rounded card">
+                        <div class="d-flex justify-content-center mb-3 mt-3 p-3">
+                            <i class="fa fa-trophy fa-xl"></i>
+                        </div>
+                        <div class="text-center mt-2">
+                            <h3>Trophy Holders</h3>
+                        </div>
+                        <div class="mb-3 mt-2 text-center">
+                            <ul class="list-unstyled">
+                                <li class="text-secondary accordion-item" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Nico Poggenpoel aka Staek - 2022
+                                    <div class="collapse" id="collapseOne">
+                                        <div class="d-flex justify-content-center mb-3 mt-3 p-3">
+                                            <div class="col-6 p-3">
+                                                <img src="/images/winning.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12 p-3">
+                    <div class="shadow-lg p-3 mb-5 bg-white rounded card">
+                        <div class="text-center mt-2">
+                            <h3>Clarens...</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-3 p-3">
+                                <img src="/images/fistbump.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-3 p-3">
+                                <img src="/images/eSwing.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-3 p-3">
+                                <img src="/images/sSwing.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-3 p-3">
+                                <img src="/images/cSwing.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-3 p-3">
+                                <img src="/images/spSwing.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-3 p-3">
+                                <img src="/images/fSwing.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-3 p-3">
+                                <img src="/images/hSwing.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-3 p-3">
+                                <img src="/images/lSwing.jpg" class="d-block w-100" alt="2N6A1740.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        // Get all accordion items
+        var accordionItems = document.querySelectorAll('.accordion-item');
+
+        // Loop through each accordion item and add event listener
+        accordionItems.forEach(function (item) {
+            item.addEventListener('click', function () {
+                // Get the collapse target for this item
+                var target = item.getAttribute('data-bs-target');
+                // Get the Collapse instance for this item
+                var collapseInstance = bootstrap.Collapse.getInstance(document.querySelector(target));
+                // Toggle the collapse state
+                collapseInstance.toggle();
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+    </style>
+}

@@ -119,28 +119,32 @@ namespace Template.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/Home");
 
+            // Login
             if (!string.IsNullOrEmpty(Login.Email) && !string.IsNullOrEmpty(Login.Password))
             {
-                // The form data indicates a login attempt
-                //var signedInUser = await _signInManager.UserManager.FindByEmailAsync(Login.Email);
-                //var role = await _signInManager.UserManager.GetRolesAsync(signedInUser);
-                //if (role.Contains(Role.User))
-                //{
-                //    returnUrl = Url.Content("~/HomeFrontEnd/Index");
-                //}
+                var signedInUser = await _signInManager.UserManager.FindByEmailAsync(Login.Email);
+                var role = await _signInManager.UserManager.GetRolesAsync(signedInUser);
+
+                if (role.Contains(Role.User))
+                {
+                    returnUrl = Url.Content("~/HomeFrontEnd/Index");
+                }
+                else if (role.Contains(Role.SuperAdmin))
+                {
+                    returnUrl = Url.Content("~/Home");
+                }
 
                 var result = await _signInManager.PasswordSignInAsync(Login.Email, Login.Password, Login.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl); // Redirect to the specified return URL or the home page
+                    return LocalRedirect(returnUrl);
                 }
-                // Handle login failure
+
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }
             else if (!string.IsNullOrEmpty(Register.Email) && !string.IsNullOrEmpty(Register.Password) && !string.IsNullOrEmpty(Register.ConfirmPassword))
             {
-                // The form data indicates a registration attempt
+                // Register
                 if (Register.Password != Register.ConfirmPassword)
                 {
                     ModelState.AddModelError(string.Empty, "The password and confirmation password do not match.");
@@ -151,15 +155,16 @@ namespace Template.Areas.Identity.Pages.Account
                     var user = CreateUser();
                     await _userStore.SetUserNameAsync(user, Register.Email, CancellationToken.None);
                     await _emailStore.SetEmailAsync(user, Register.Email, CancellationToken.None);
+
                     user.IsDeleted = false;
                     var result = await _userManager.CreateAsync(user, Register.Password);
 
                     if (result.Succeeded)
                     {
-                        _logger.LogInformation("User created a new account with password.");
-                        // Handle successful registration
+                        await _userManager.AddToRoleAsync(user, "User");
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl); // Redirect to the specified return URL or the home page
+                        returnUrl = Url.Content("~/HomeFrontEnd/Index");
+                        return LocalRedirect(returnUrl);
                     }
                     else
                     {

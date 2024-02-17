@@ -280,6 +280,31 @@ namespace Template.Migrations
                     b.ToTable("GolfCourses");
                 });
 
+            modelBuilder.Entity("Template.Areas.Identity.Data.Models.FrontEnd.WhereTo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Destination")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WhereTos");
+                });
+
             modelBuilder.Entity("Template.Areas.Identity.Data.Models.ScoreCards.ScoreCard", b =>
                 {
                     b.Property<int>("Id")

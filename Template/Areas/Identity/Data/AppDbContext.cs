@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Template.Areas.Identity.Data;
 using Template.Areas.Identity.Data.Models.Courses;
+using Template.Areas.Identity.Data.Models.FrontEnd;
 using Template.Areas.Identity.Data.Models.ScoreCards;
 using Template.Areas.Identity.Data.Models.TeeBoxes;
 using Template.Models;
@@ -17,6 +18,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ScoreCard> ScoreCards { get; set; }
     public DbSet<TeeBox> TeeBoxes { get; set; }
     public DbSet<Tees> Tees { get; set; }
+    public DbSet<WhereTo> WhereTos { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Template.Areas.Identity.Data.Viewmodels.FrontEnd.WhereToViewModel
+@{
     ViewData["Title"] = "Home Page";
     ViewData["Controller"] = "FrontEnd";
 
@@ -12,20 +13,24 @@
     <div class="content">
         <div class="container">
             <div class="row">
+                    
                 <div class="col-sm-12 col-md-6 col-lg-6 p-3">
-                    <div class="shadow-lg p-3 mb-5 bg-white rounded card">
-                        <div class="d-flex justify-content-center mb-3 mt-3 p-3">
-                            <i class="fa fa-map-pin fa-2xl" style="color: #1c692f;"></i>
+                    <form asp-action="CreateDestination" method="post" class="" id="form" enctype="multipart/form-data" novalidate>
+                        <div class="shadow-lg p-3 mb-5 bg-white rounded card">
+                            <div class="d-flex justify-content-center mb-3 mt-3 p-3">
+                                <i class="fa fa-map-pin fa-2xl" style="color: #1c692f;"></i>
+                            </div>
+                            <div class="text-center mt-2">
+                                <h3>Where to next</h3>
+                            </div>
+                            <div class="input-group mb-3 mt-2">
+                                <input type="text" class="form-control" asp-for="Destination" placeholder="Please enter a destination" aria-label="Destination">
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Submit</button>
+                            </div>
                         </div>
-                        <div class="text-center mt-2">
-                            <h3>Where to next</h3>
-                        </div>
-                        <div class="input-group mb-3 mt-2">
-                            <input type="text" class="form-control" placeholder="Please enter a destination" aria-label="Destination">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Submit</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
+                    
                 <div class="col-sm-12 col-md-6 col-lg-6 p-3">
                     <div class="shadow-lg p-3 mb-5 bg-white rounded card">
                         <div class="d-flex justify-content-center mb-3 mt-3 p-3">
@@ -92,8 +97,7 @@
 
 @section Scripts
 {
-    <script>
-        // Get all accordion items
+    <script>// Get all accordion items
         var accordionItems = document.querySelectorAll('.accordion-item');
 
         // Loop through each accordion item and add event listener
@@ -106,8 +110,7 @@
                 // Toggle the collapse state
                 collapseInstance.toggle();
             });
-        });
-    </script>
+        });</script>
 }
 
 @section Styles {

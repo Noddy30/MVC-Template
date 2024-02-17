@@ -13,6 +13,7 @@ using Template.Repositories.Users;
 using Template.Services;
 using AutoMapper;
 using Template.Areas.Identity.Data.MapperProfiles;
+using Template.Repositories.WhereTo;
 
 namespace Template
 {
@@ -31,7 +32,14 @@ namespace Template
             builder.Services.AddControllersWithViews();
 
             //Automapper
-            builder.Services.AddAutoMapper(typeof(TeesProfile), typeof(TeeBoxProfile), typeof(ScoreCardProfile), typeof(GolfCourseProfile),typeof(Program));
+            builder.Services.AddAutoMapper(
+                typeof(TeesProfile),
+                typeof(TeeBoxProfile),
+                typeof(ScoreCardProfile),
+                typeof(GolfCourseProfile),
+                typeof(WhereToProvile),
+                typeof(Program)
+            );
 
             // Add Repositories
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
@@ -41,6 +49,7 @@ namespace Template
             builder.Services.AddTransient<IScoreCardRepository, ScoreCardRepository>();
             builder.Services.AddTransient<ITeeBoxRepository, TeeBoxRepository>();
             builder.Services.AddTransient<IRYZEGolfService, RYZEGolfService>();
+            builder.Services.AddTransient<IWhereToRepository, WhereToRepository>();
 
 
             builder.Services.AddDbContext<AppDbContext>(options =>

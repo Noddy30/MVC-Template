@@ -18,8 +18,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: |
+        mkdir -p ./build-output  # Ensure the build-output directory exists
         dotnet build --configuration Release --output ./build-output
-        mkdir -p ./build-output  # Ensure the build-output directory exists even if no files are generated
 
     - name: List DLL files
       run: |
@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Check Build Output Directory
         run: |
-          if [ ! -d "./build-output" ]; then
+          if [ ! -d "./build-output" ] || [ -z "$(ls -A ./build-output)" ]; then
             echo "Build output directory does not exist or is empty."
             exit 1
           fi

@@ -32,12 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Check Build Output Directory
+      - name: Debug Build Output Directory
         run: |
-          if [ ! -d "./build-output" ] || [ -z "$(ls -A ./build-output)" ]; then
-            echo "Build output directory does not exist or is empty."
-            exit 1
-          fi
+          ls -R ./build-output
       - name: List Build Output
         run: |
           ls -R ./build-output

@@ -29,6 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Check Build Output Directory
+        run: |
+          if [ ! -d "./build-output" ]; then
+            echo "Build output directory does not exist or is empty."
+            exit 1
+          fi
       - name: List Build Output
         run: |
           ls -R ./build-output
@@ -36,7 +42,7 @@ jobs:
         id: find_build_output
         run: |
           # Search for the built files and output the path
-          build_output=$(find ./ -type f -name '*.dll' -print -quit)
+          build_output=$(find ./build-output -type f -name '*.dll' -print -quit)
           echo "::set-output name=build_output_path::$build_output"
       - name: Copy files to server
         uses: appleboy/scp-action@master

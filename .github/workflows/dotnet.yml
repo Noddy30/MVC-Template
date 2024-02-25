@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: debian-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -26,9 +26,12 @@ jobs:
         ls -R ./build-output
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: debian-latest
     needs: build
     steps:
+      - name: List Build Output
+        run: |
+          ls -R ./build-output
       - name: Find Build Output
         id: find_build_output
         run: |

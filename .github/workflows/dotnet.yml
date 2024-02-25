@@ -27,7 +27,7 @@ jobs:
       id: find_build_output
       run: |
         # Search for the built files and output the path
-        build_output=$(find ./build-output -type d -name 'bin' -print -quit)
+        build_output=$(find ./build-output -type f -name '*.dll' -print -quit)
         echo "::set-output name=build_output_path::$build_output"
     - name: Copy files to server
       uses: appleboy/scp-action@master

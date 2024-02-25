@@ -16,14 +16,14 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
+    - name: Debug Build Output Directory Creation  # Add this debug step
+      run: |
+        mkdir -p ./build-output
+        ls -R ./build-output
     - name: Build
       run: |
-        mkdir -p ./build-output  # Ensure the build-output directory exists
         dotnet build --configuration Release --output ./build-output
-
-        # Debugging: List files in the build-output directory
-        ls -R ./build-output
-
+        ls -R ./build-output  # Debugging: List files in the build-output directory
     - name: List DLL files
       run: |
         ls -R ./build-output
@@ -32,9 +32,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Debug Build Output Directory
+      - name: Check Build Output Directory
         run: |
-          ls -R ./build-output
+          if [ ! -d "./build-output" ] || [ -z "$(ls -A ./build-output)" ]; then
+            echo "Build output directory does not exist or is empty."
+            exit 1
+          fi
       - name: List Build Output
         run: |
           ls -R ./build-output

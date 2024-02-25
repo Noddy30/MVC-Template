@@ -1,7 +1,4 @@
- # This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
+name: .NET CI/CD
 
 on:
   push:
@@ -9,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -20,17 +17,23 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
-      
+      run: dotnet build --configuration Release --output ./build-output
+
   deploy:
-      runs-on: ubuntu-latest
-      needs: build
-      steps:
-      - name: Copy files to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: '.'  # Specify the path to your build artifacts if different
-          target: '/var/www/html'  # Adjust this path to your server's web directory
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Find Build Output
+      id: find_build_output
+      run: |
+        # Search for the built files and output the path
+        build_output=$(find ./build-output -type d -name 'bin' -print -quit)
+        echo "::set-output name=build_output_path::$build_output"
+    - name: Copy files to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: ${{ steps.find_build_output.outputs.build_output_path }}  # Use the output from previous step
+        target: '/var/www/html'  # Adjust this path to your server's web directory

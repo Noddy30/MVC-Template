@@ -37,5 +37,5 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ${{ steps.find_build_output.outputs.build_output_path }}  # Use the output from previous step
+          source: './bin/*.dll'  # Adjust this path to point to your DLL files
           target: '/var/www/html'  # Adjust this path to your server's web directory

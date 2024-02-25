@@ -21,6 +21,9 @@ jobs:
         mkdir -p ./build-output  # Ensure the build-output directory exists
         dotnet build --configuration Release --output ./build-output
 
+        # Debugging: List files in the build-output directory
+        ls -R ./build-output
+
     - name: List DLL files
       run: |
         ls -R ./build-output

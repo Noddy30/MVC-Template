@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "master" ]
 
-jobs:
+obs:
   build:
     runs-on: ubuntu-latest
 
@@ -14,16 +14,16 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+    - name: Create Build Output Directory
+      run: mkdir -p ./build-output
+    - name: Debug Build Output Directory
+      run: ls -R ./build-output  # Verify directory contents
     - name: Restore dependencies
       run: dotnet restore
-    - name: Debug Build Output Directory Creation  # Add this debug step
-      run: |
-        mkdir -p ./build-output
-        ls -R ./build-output
     - name: Build
       run: |
         dotnet build --configuration Release --output ./build-output
-        ls -R ./build-output  # Debugging: List files in the build-output directory
+        ls -R ./build-output  # Debug: List files in the build-output directory
     - name: List DLL files
       run: |
         ls -R ./build-output
@@ -38,6 +38,9 @@ jobs:
             echo "Build output directory does not exist or is empty."
             exit 1
           fi
+      - name: List Build Output
+        run: |
+          ls -R ./build-output
       - name: List Build Output
         run: |
           ls -R ./build-output

@@ -28,9 +28,12 @@ namespace Template.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            
-            return RedirectToPage("~/Identity/Account/LoginRegister");
-            
+
+            returnUrl = Url.Content("~/Account/Login");
+
+            return RedirectToPage(returnUrl);
+
+
         }
     }
 }

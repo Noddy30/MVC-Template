@@ -120,7 +120,6 @@ namespace Template
                 string email = "neduan41@gmail.com";
                 string password = "N@ude1998";
 
-
                 if (await userManager.FindByEmailAsync(email) == null)
                 {
                     var user = new ApplicationUser();
@@ -131,6 +130,9 @@ namespace Template
                     user.FirstName = "Eduan";
                     user.LastName = "Naude";
                     user.PhoneNumber = "0837832973";
+                    user.ProfilePicture = "";
+                    user.IdNumber = "9809305040086";
+                    user.Handicap = 11;
                     user.IsDeleted = false;
 
                     var createUserResult = await userManager.CreateAsync(user, password);
@@ -143,30 +145,30 @@ namespace Template
                 }
 
                 // Define the second user
-                string email2 = "mbotha181@gmail.com";
-                string password2 = "P@ssword123";
+                //string email2 = "mbotha181@gmail.com";
+                //string password2 = "P@ssword123";
 
-                if (await userManager.FindByEmailAsync(email2) == null)
-                {
-                    var user2 = new ApplicationUser
-                    {
-                        Id = "ea01191c-e6f4-4d8f-8dee-6e6c12e66afc",
-                        UserName = email2,
-                        Email = email2,
-                        FirstName = "Spoegie",
-                        LastName = "MPDB",
-                        PhoneNumber = "0832756808",
-                        IsDeleted = false
-                    };
+                //if (await userManager.FindByEmailAsync(email2) == null)
+                //{
+                //    var user2 = new ApplicationUser
+                //    {
+                //        Id = "ea01191c-e6f4-4d8f-8dee-6e6c12e66afc",
+                //        UserName = email2,
+                //        Email = email2,
+                //        FirstName = "Spoegie",
+                //        LastName = "MPDB",
+                //        PhoneNumber = "0832756808",
+                //        IsDeleted = false
+                //    };
 
-                    var createUserResult2 = await userManager.CreateAsync(user2, password2);
+                //    var createUserResult2 = await userManager.CreateAsync(user2, password2);
 
-                    if (createUserResult2.Succeeded)
-                    {
-                        // Assign a role to the second user if needed
-                        await userManager.AddToRoleAsync(user2, "SuperAdmin");
-                    }
-                }
+                //    if (createUserResult2.Succeeded)
+                //    {
+                //        // Assign a role to the second user if needed
+                //        await userManager.AddToRoleAsync(user2, "SuperAdmin");
+                //    }
+                //}
             }
 
             app.Run();

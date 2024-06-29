@@ -117,7 +117,7 @@ namespace Template.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/Home");
+            returnUrl ??= Url.Content("~/HomeFrontEnd/Index");
 
             // Login
             if (!string.IsNullOrEmpty(Login.Email) && !string.IsNullOrEmpty(Login.Password))

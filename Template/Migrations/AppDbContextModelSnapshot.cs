@@ -173,6 +173,12 @@ namespace Template.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext");
 
+                    b.Property<float?>("Handicap")
+                        .HasColumnType("float");
+
+                    b.Property<string>("IdNumber")
+                        .HasColumnType("longtext");
+
                     b.Property<bool?>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -201,6 +207,9 @@ namespace Template.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");

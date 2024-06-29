@@ -2158,12 +2158,14 @@
     <Folder Include="Areas\Identity\Data\Models\FrontEnd\" />
     <Folder Include="Areas\Identity\Data\Viewmodels\FrontEnd\" />
     <Folder Include="Repositories\WhereTo\" />
+    <Folder Include="wwwroot\images\profile\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\" />
+    <Content Remove="wwwroot\images\profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Identity\Pages\Account\dist\css\adminlte.css">

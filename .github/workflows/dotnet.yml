@@ -57,4 +57,4 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY_NO_PASS }}
         source: './build-output/**/*.dll'  # Adjust this path to point to your DLL files
-        target: '/var/www/html'  # Adjust this path to your server's web directory
+        target: '/var/www/html'  # Adjust this path to your server's web director

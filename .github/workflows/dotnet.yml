@@ -58,4 +58,4 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY_NO_PASS }}
         source: './build-output/**/*.dll'
         target: '/var/www/html'
-        debug: true  # Enable debug mode
+        debug: true  # Enable debug mod

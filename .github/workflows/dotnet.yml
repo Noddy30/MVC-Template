@@ -65,4 +65,4 @@ jobs:
         key: /home/spuismys/.ssh/id_rsa
         source: './build-output/**/*.dll'
         target: '/var/www/html'
-        debug: true  # Enable debug mod
+        debug: true  # Enable debug mode

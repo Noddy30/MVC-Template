@@ -41,7 +41,7 @@ jobs:
         chmod 600 /tmp/id_rsa
     - name: Check SSH Connection
       run: |
-        ssh -o StrictHostKeyChecking=no -o BatchMode=yes -i /tmp/id_rsa -p 22 spuismys@192.168.0.105 echo "SSH connection successful"
+        ssh -o StrictHostKeyChecking=no -o BatchMode=yes -i /tmp/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
       env:
         SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
 
@@ -70,7 +70,7 @@ jobs:
     - name: Copy files to server
       uses: appleboy/scp-action@master
       with:
-        host: 192.168.0.105
+        host: 165.0.4.88
         username: spuismys
         key: /tmp/id_rsa
         passphrase: ${{ secrets.SSH_PASSPHRASE }}

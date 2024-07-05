@@ -1,0 +1,9 @@
+# Ignore appsettings files
+appsettings.json
+
+# Ignore other sensitive files and directories
+*.pem
+*.key
+/.vscode
+/bin/
+/obj/

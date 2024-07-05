@@ -22,7 +22,25 @@ namespace Template
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'AuthDbContextConnection' not found.");
+
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'AuthDbContextConnection' not found.");
+
+            var configuration = builder.Configuration;
+
+            if (builder.Environment.IsDevelopment())
+            {
+                configuration.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true);
+            }
+            else
+            {
+                configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            }
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            });
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()

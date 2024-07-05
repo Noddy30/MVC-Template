@@ -63,6 +63,8 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
         key: /home/spuismys/.ssh/id_rsa
+        passphrase: naude1998
         source: './build-output/**/*.dll'
         target: '/var/www/html'
         debug: true  # Enable debug mode
+        password: naude1998

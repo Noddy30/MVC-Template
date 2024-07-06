@@ -15,7 +15,6 @@ jobs:
       MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
       MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
 
     steps:
     - uses: actions/checkout@v3
@@ -38,15 +37,13 @@ jobs:
     - name: Set up SSH key
       run: |
         mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY_NO_PASS" > ~/.ssh/id_rsa_no_pass
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa_no_pass
         chmod 600 ~/.ssh/id_rsa_no_pass
         ssh-keyscan -t ed25519 -p 22 165.0.4.88 >> ~/.ssh/known_hosts
 
     - name: Check SSH Connection to Public IP
       run: |
         ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_no_pass -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_NO_PASS }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -75,7 +72,7 @@ jobs:
       with:
         host: 192.168.0.105
         username: spuismys
-        key: ~/.ssh/id_rsa_no_pass
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: './build-output/**/*.dll'
         target: '/var/www/html'
         debug: true

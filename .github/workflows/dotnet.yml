@@ -39,9 +39,9 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > /tmp/id_rsa
         chmod 600 /tmp/id_rsa
-    - name: Check SSH Connection
+    - name: Check SSH Connection to Public IP
       run: |
-        ssh -vvv -o StrictHostKeyChecking=no -o BatchMode=yes -i /tmp/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
+        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
       env:
         SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
 
@@ -67,7 +67,7 @@ jobs:
       run: |
         build_output=$(find ./build-output -type f -name '*.dll' -print -quit)
         echo "::set-output name=build_output_path::$build_output"
-    - name: Copy files to server
+    - name: Copy files to Raspberry Pi
       uses: appleboy/scp-action@master
       with:
         host: 192.168.0.105

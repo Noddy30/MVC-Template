@@ -43,7 +43,7 @@ jobs:
         ssh-keyscan -t ed25519 -p 22 165.0.4.88 >> ~/.ssh/known_hosts
     - name: Check SSH Connection to Public IP
       run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
+        ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
       env:
         SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
 

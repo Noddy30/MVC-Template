@@ -41,7 +41,7 @@ jobs:
         chmod 600 /tmp/id_rsa
     - name: Check SSH Connection
       run: |
-        ssh -vvv -o StrictHostKeyChecking=no -o BatchMode=yes -i /tmp/id_rsa -p 22 spuismys@192.168.0.105 echo "SSH connection successful"
+        ssh -vvv -o StrictHostKeyChecking=no -o BatchMode=yes -i /tmp/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
       env:
         SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
 

@@ -35,13 +35,9 @@ jobs:
       with:
         name: build-output
         path: ./build-output
-    - name: Set up SSH key
-      run: |
-        echo "$SSH_PRIVATE_KEY" > /tmp/id_rsa
-        chmod 600 /tmp/id_rsa
     - name: Check SSH Connection to Public IP
       run: |
-        ssh -o StrictHostKeyChecking=no -i /tmp/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
       env:
         SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
 
@@ -72,9 +68,8 @@ jobs:
       with:
         host: 192.168.0.105
         username: spuismys
-        key: /tmp/id_rsa
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         source: './build-output/**/*.dll'
         target: '/var/www/html'
         debug: true
-        password: ${{ secrets.SSH_PASSPHRASE }}

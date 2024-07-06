@@ -38,12 +38,12 @@ jobs:
     - name: Set up SSH key
       run: |
         mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        echo "$SSH_PRIVATE_KEY_NO_PASS" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -t ed25519 -p 22 165.0.4.88 >> ~/.ssh/known_hosts
     - name: Check SSH Connection to Public IP
       run: |
-        ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
+        ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_no_pass -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
       env:
         SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE }}
 
@@ -74,8 +74,7 @@ jobs:
       with:
         host: 192.168.0.105
         username: spuismys
-        key: ~/.ssh/id_rsa
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        key: ~/.ssh/id_rsa_no_pass
         source: './build-output/**/*.dll'
         target: '/var/www/html'
         debug: true

@@ -41,7 +41,6 @@ jobs:
         echo "$SSH_PRIVATE_KEY_NO_PASS" > ~/.ssh/id_rsa_no_pass
         chmod 600 ~/.ssh/id_rsa_no_pass
         ssh-keyscan -t ed25519 -p 22 165.0.4.88 >> ~/.ssh/known_hosts
-
     - name: Check SSH Connection to Public IP
       run: |
         ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_no_pass -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
@@ -74,6 +73,6 @@ jobs:
         host: 165.0.4.88
         username: spuismys
         key: ${{ secrets.SSH_PRIVATE_KEY_NO_PASS }}
-        source: './build-output/**/*.dll'
-        target: '/var/www/html'
+        source: './build-output/*'
+        target: '/var/www/html/build-output'
         debug: true

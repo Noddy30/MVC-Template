@@ -26,7 +26,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Publish
-      run: dotnet publish -c Release -o ./publish-output
+      run: dotnet publish -c Release -o ./build-output
 
     - name: Create Build Output Directory
       run: mkdir -p ./build-output
@@ -44,8 +44,9 @@ jobs:
         name: build-output
         path: ./build-output
 
-    - name: List Publish Output
-      run: ls -R ./publish-output
+    - name: List Build Output
+      run: |
+        ls -R ./build-output
 
     - name: Set up SSH key
       run: |
@@ -76,7 +77,8 @@ jobs:
         fi
 
     - name: List Build Output
-      run: ls -R ./build-output
+      run: |
+        ls -R ./build-output
 
     - name: Find Build Output
       id: find_build_output
@@ -84,12 +86,12 @@ jobs:
         build_output=$(find ./build-output -type f -name '*.dll' -print -quit)
         echo "::set-output name=build_output_path::$build_output"
 
-    - name: Copy files to Raspberry Pi
+    - name: Copy Template.dll to Raspberry Pi
       uses: appleboy/scp-action@master
       with:
         host: 165.0.4.88
         username: spuismys
         key: ${{ secrets.SSH_PRIVATE_KEY_NO_PASS }}
-        source: './publish-output'
+        source: './build-output/Template.dll'
         target: '/var/www/html'
         debug: true

@@ -19,28 +19,38 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+
+    - name: Publish
+      run: dotnet publish -c Release -o ./publish-output
+
     - name: Create Build Output Directory
       run: mkdir -p ./build-output
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
       run: |
         dotnet build --configuration Release --output ./build-output
+
     - name: Upload Build Output
       uses: actions/upload-artifact@v2
       with:
         name: build-output
         path: ./build-output
+
     - name: Set up SSH key
       run: |
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY_NO_PASS" > ~/.ssh/id_rsa_no_pass
         chmod 600 ~/.ssh/id_rsa_no_pass
         ssh-keyscan -t ed25519 -p 22 165.0.4.88 >> ~/.ssh/known_hosts
+
     - name: Check SSH Connection to Public IP
       run: |
         ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_no_pass -p 22 spuismys@165.0.4.88 echo "SSH connection successful"
@@ -54,25 +64,29 @@ jobs:
       with:
         name: build-output
         path: ./build-output
+
     - name: Check Build Output Directory
       run: |
         if [ ! -d "./build-output" ] || [ -z "$(ls -A ./build-output)" ]; then
           echo "Build output directory does not exist or is empty."
           exit 1
         fi
+
     - name: List Build Output
       run: ls -R ./build-output
+
     - name: Find Build Output
       id: find_build_output
       run: |
         build_output=$(find ./build-output -type f -name '*.dll' -print -quit)
         echo "::set-output name=build_output_path::$build_output"
+
     - name: Copy files to Raspberry Pi
       uses: appleboy/scp-action@master
       with:
         host: 165.0.4.88
         username: spuismys
         key: ${{ secrets.SSH_PRIVATE_KEY_NO_PASS }}
-        source: './build-output/Template.dll'
+        source: './publish-output'
         target: '/var/www/html'
         debug: true

@@ -73,6 +73,6 @@ jobs:
         host: 165.0.4.88
         username: spuismys
         key: ${{ secrets.SSH_PRIVATE_KEY_NO_PASS }}
-        source: './build-output/*'
-        target: '/var/www/html/build-output'
+        source: './build-output/Template.dll'
+        target: '/var/www/html'
         debug: true

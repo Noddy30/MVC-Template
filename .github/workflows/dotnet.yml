@@ -44,6 +44,9 @@ jobs:
         name: build-output
         path: ./build-output
 
+    - name: List Publish Output
+      run: ls -R ./publish-output
+
     - name: Set up SSH key
       run: |
         mkdir -p ~/.ssh

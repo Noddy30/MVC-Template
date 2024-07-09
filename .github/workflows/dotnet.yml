@@ -27,13 +27,8 @@ jobs:
       run: mkdir -p ./build-output
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: |
-        dotnet build --configuration Release --output ./build-output
-    - name: Copy Project Files
-      run: |
-        cp *.csproj ./build-output/
-        cp *.sln ./build-output/
+    - name: Publish
+      run: dotnet publish --configuration Release --output ./build-output
     - name: Upload Build Output
       uses: actions/upload-artifact@v2
       with:
@@ -57,11 +52,6 @@ jobs:
         fi
     - name: List Build Output
       run: ls -R ./build-output
-    - name: Find Build Output
-      id: find_build_output
-      run: |
-        build_output=$(find ./build-output -type f -name '*.dll' -print -quit)
-        echo "::set-output name=build_output_path::$build_output"
     - name: Set up SSH key
       run: |
         mkdir -p ~/.ssh

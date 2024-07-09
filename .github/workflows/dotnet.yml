@@ -58,6 +58,9 @@ jobs:
         echo "$SSH_PRIVATE_KEY_NO_PASS" > ~/.ssh/id_rsa_no_pass
         chmod 600 ~/.ssh/id_rsa_no_pass
         ssh-keyscan -t ed25519 -p 22 165.0.4.88 >> ~/.ssh/known_hosts
+    - name: Test SSH connection
+      run: |
+        ssh -i ~/.ssh/id_rsa_no_pass -o StrictHostKeyChecking=no spuismys@165.0.4.88 'echo "SSH connection successful"'
     - name: Install rsync
       run: sudo apt-get install -y rsync
     - name: Copy files to Raspberry Pi using rsync
